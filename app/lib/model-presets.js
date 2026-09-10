@@ -1,0 +1,82 @@
+export const MODEL_PRESETS = [
+  {
+    id: "openai-balance",
+    provider: "OpenAI",
+    label: "GPT cân bằng",
+    model: "gpt-5.4-mini",
+    baseUrl: "",
+    costLabel: "Trả phí theo API usage",
+    note: "Khuyến nghị mặc định: nhanh hơn và rẻ hơn model flagship.",
+  },
+  {
+    id: "openai-quality",
+    provider: "OpenAI",
+    label: "GPT chất lượng cao",
+    model: "gpt-5.5",
+    baseUrl: "",
+    costLabel: "Trả phí cao hơn",
+    note: "Flagship, dùng khi cần phân tích brief và copywriting tốt nhất.",
+  },
+  {
+    id: "openai-cheap",
+    provider: "OpenAI",
+    label: "GPT tiết kiệm",
+    model: "gpt-5.4-nano",
+    baseUrl: "",
+    costLabel: "Trả phí thấp hơn",
+    note: "Hợp tạo nháp nhanh, chất lượng có thể kém hơn mini/flagship.",
+  },
+  {
+    id: "gemini-flash",
+    provider: "Google Gemini",
+    label: "Gemini Flash",
+    model: "gemini-3.5-flash",
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
+    costLabel: "Free tier giới hạn, vượt quota thì trả phí",
+    note: "Nhanh, hợp để thử nhiều phiên bản content.",
+  },
+  {
+    id: "gemini-lite",
+    provider: "Google Gemini",
+    label: "Gemini Flash-Lite",
+    model: "gemini-3.1-flash-lite",
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
+    costLabel: "Free tier giới hạn, vượt quota thì trả phí",
+    note: "Nhanh và tiết kiệm, hợp generate nhiều biến thể.",
+  },
+  {
+    id: "gemini-pro",
+    provider: "Google Gemini",
+    label: "Gemini Pro",
+    model: "gemini-3.1-pro",
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
+    costLabel: "Trả phí / tùy quota tài khoản",
+    note: "Preview/advanced, dùng khi cần phân tích brief kỹ hơn.",
+  },
+  {
+    id: "openrouter",
+    provider: "OpenRouter",
+    label: "OpenRouter",
+    model: "openai/gpt-5.4-mini",
+    baseUrl: "https://openrouter.ai/api/v1",
+    costLabel: "Có model free, đa số model tốt là trả phí",
+    note: "Một API để chọn nhiều model khác nhau.",
+  },
+  {
+    id: "ollama",
+    provider: "Ollama local",
+    label: "Local LLM",
+    model: "llama3.1",
+    baseUrl: "http://localhost:11434/v1",
+    costLabel: "Local miễn phí, tốn tài nguyên máy",
+    note: "Cần cài Ollama và pull model trước.",
+  },
+];
+
+export function applyModelPreset(currentSettings, preset) {
+  return {
+    ...currentSettings,
+    model: preset.model,
+    baseUrl: preset.baseUrl,
+  };
+}
