@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import "./ui-refresh.css";
 
-const beVietnam = Be_Vietnam_Pro({
+const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -43,7 +43,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${beVietnam.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
