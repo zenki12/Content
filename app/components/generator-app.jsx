@@ -16,10 +16,10 @@ import {
   summarizeBrief,
 } from "../lib/prompt-engine.js";
 
-const HISTORY_KEY = "local-1prompt-history";
-const SETTINGS_KEY = "local-1prompt-settings";
+const HISTORY_KEY = "sua-bai-history";
+const SETTINGS_KEY = "sua-bai-settings";
 const THEME_KEY = "aica-theme";
-const TUTORIAL_KEY = "local-1prompt-tutorial-done";
+const TUTORIAL_KEY = "sua-bai-tutorial-done";
 
 const DEFAULT_SETTINGS = {
   model: "gpt-5.4-mini",
@@ -71,7 +71,7 @@ const IDEA_COUNTS = ["3 ý tưởng", "5 ý tưởng", "7 ý tưởng", "10 ý t
 
 const TUTORIAL_STEPS = [
   {
-    title: "Chào mừng đến với 1Prompt",
+    title: "Chào mừng đến với Sửa Bài",
     body: "Bạn có thể chọn chế độ Siêu tốc, Cơ bản hoặc Nâng cao, sau đó chọn đúng workflow để AI tạo nội dung theo brief.",
   },
   {
@@ -500,9 +500,9 @@ export default function GeneratorApp() {
         </div>
 
         <header className="brand-head">
-          <div className="logo-mark">1prompt</div>
-          <h1>1Prompt - Trợ lý Sáng tạo</h1>
-          <p>1 Lệnh Ăn Ngay - Sản xuất nội dung siêu tốc cho Nhà sáng tạo</p>
+          <div className="logo-mark">Sửa Bài</div>
+          <h1>Sửa Bài - Trợ lý nâng cấp nội dung</h1>
+          <p>Viết lại sắc bén - Nâng cấp nội dung trong vài phút.</p>
         </header>
 
         <div className="divider" />

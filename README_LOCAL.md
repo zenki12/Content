@@ -1,8 +1,8 @@
-# 1Prompt Local
+# Sửa Bài Local
 
-Internal AI content generator inspired by the analyzed workflow from 1prompt.vn.
-This is a clean-room local tool: no login, billing, subscription, checkout, or
-dependency on 1prompt.vn APIs.
+Sửa Bài is a local AI content editing and generation tool.
+It is designed for rewriting, improving, and producing Vietnamese marketing content
+without requiring a separate hosted API from the original reference product.
 
 ## Run
 

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "1Prompt - Trợ lý Sáng tạo",
-  description: "1 Lệnh Ăn Ngay - Sản xuất nội dung siêu tốc cho Nhà sáng tạo",
+  title: "Sửa Bài - Trợ lý nâng cấp nội dung",
+  description: "Viết lại sắc bén - Nâng cấp nội dung trong vài phút.",
   icons: {
     icon: "/logo.png",
   },
