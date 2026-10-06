@@ -479,123 +479,124 @@ export default function GeneratorApp() {
   return (
     <main className="oneprompt-page">
       <section className="oneprompt-card">
-        <div className="top-bar">
-          <button
-            className="theme-toggle"
-            type="button"
-            aria-label="Đổi giao diện"
-            onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-          >
-            <span>{theme === "dark" ? "☾" : "☀️"}</span>
-            <strong>{theme === "dark" ? "☀️" : "☾"}</strong>
-          </button>
-          <div className="top-actions">
-            <button className="service-btn" type="button">
-              💎 Gói dịch vụ
-            </button>
-            <button className="login-btn" type="button">
-              ↪ Đăng nhập
-            </button>
-          </div>
-        </div>
+        <aside className="workspace-rail">
+          <header className="brand-head">
+            <div className="brand-lockup">
+              <div className="logo-mark">SB</div>
+              <div>
+                <h1>Sửa Bài</h1>
+                <p>Trợ lý nâng cấp nội dung</p>
+              </div>
+            </div>
+          </header>
 
-        <header className="brand-head">
-          <div className="logo-mark">Sửa Bài</div>
-          <h1>Sửa Bài - Trợ lý nâng cấp nội dung</h1>
-          <p>Viết lại sắc bén - Nâng cấp nội dung trong vài phút.</p>
-        </header>
-
-        <div className="divider" />
-
-        <div className="mode-bar">
-          <button className="intro-btn" type="button" onClick={() => setShowTutorial(true)}>
-            📖 Giới thiệu
-          </button>
-          <nav className="mode-tabs">
-            {MODES.map((item) => (
+          <div className="rail-group-label">Chế độ biên tập</div>
+          <nav className="mode-tabs" aria-label="Chế độ biên tập">
+            {MODES.map((item, index) => (
               <button type="button" key={item.id} className={mode === item.id ? "active" : ""} onClick={() => selectMode(item.id)}>
-                {item.icon} {item.label}
+                <span className="nav-index">{index + 1}</span>
+                <span>{item.icon} {item.label}</span>
               </button>
             ))}
           </nav>
-        </div>
 
-        <nav className="workflow-tabs">
-          {WORKFLOWS.map((item) => (
-            <button
-              type="button"
-              key={item.id}
-              className={workflow === item.id ? "active" : ""}
-              onClick={() => setWorkflow(item.id)}
-            >
-              <strong>
-                {item.icon} {item.title}
-              </strong>
-              <small>{item.desc}</small>
-            </button>
-          ))}
-        </nav>
+          <div className="rail-group-label">Nghiệp vụ nội dung</div>
+          <nav className="workflow-tabs" aria-label="Nghiệp vụ nội dung">
+            {WORKFLOWS.map((item, index) => (
+              <button
+                type="button"
+                key={item.id}
+                className={workflow === item.id ? "active" : ""}
+                onClick={() => setWorkflow(item.id)}
+              >
+                <span className="nav-index">{index + 4}</span>
+                <span>
+                  <strong>{item.icon} {item.title}</strong>
+                  <small>{item.desc}</small>
+                </span>
+              </button>
+            ))}
+          </nav>
 
-        <details className="ai-settings">
-          <summary>⚙️ Cấu hình AI</summary>
-          <div className="model-grid">
-            {MODEL_PRESETS.map((preset) => {
-              const active = settings.model === preset.model && (settings.baseUrl || "") === preset.baseUrl;
-              return (
-                <button
-                  key={preset.id}
-                  type="button"
-                  className={active ? "model-option active" : "model-option"}
-                  onClick={() => setSettings((current) => applyModelPreset(current, preset))}
-                >
-                  <span>{preset.provider}</span>
-                  <strong>{preset.label}</strong>
-                  <code>{preset.model}</code>
-                  <em>{preset.costLabel}</em>
-                </button>
-              );
-            })}
+          <details className="ai-settings">
+            <summary>⚙ Cấu hình AI</summary>
+            <div className="model-grid">
+              {MODEL_PRESETS.map((preset) => {
+                const active = settings.model === preset.model && (settings.baseUrl || "") === preset.baseUrl;
+                return (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    className={active ? "model-option active" : "model-option"}
+                    onClick={() => setSettings((current) => applyModelPreset(current, preset))}
+                  >
+                    <span>{preset.provider}</span>
+                    <strong>{preset.label}</strong>
+                    <code>{preset.model}</code>
+                    <em>{preset.costLabel}</em>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="settings-fields">
+              <TextInput label="API key" value={settings.apiKey} placeholder="Dán API key..." onChange={(apiKey) => setSettings((current) => ({ ...current, apiKey }))} />
+              <TextInput label="Model" value={settings.model} placeholder="Tên model" onChange={(model) => setSettings((current) => ({ ...current, model }))} />
+              <TextInput label="Base URL" value={settings.baseUrl} placeholder="Để trống nếu dùng OpenAI" onChange={(baseUrl) => setSettings((current) => ({ ...current, baseUrl }))} />
+            </div>
+          </details>
+
+          <div className="rail-foot">Viết lại sắc bén · Nâng cấp nội dung trong vài phút.</div>
+        </aside>
+
+        <div className="workspace-main">
+          <div className="top-bar">
+            <div className="top-context">
+              <span>Không gian làm việc</span>
+              <strong>Nội dung thương hiệu</strong>
+            </div>
+            <div className="top-actions">
+              <button className="intro-btn" type="button" onClick={() => setShowTutorial(true)}>Hướng dẫn</button>
+              <button className="theme-toggle" type="button" aria-label="Đổi giao diện" onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
+                {theme === "dark" ? "Chế độ sáng" : "Chế độ tối"}
+              </button>
+              <button className="service-btn" type="button">Gói dịch vụ</button>
+              <button className="login-btn" type="button">Đăng nhập</button>
+            </div>
           </div>
-          <div className="settings-fields">
-            <TextInput
-              label="API key"
-              value={settings.apiKey}
-              placeholder="Dán API key của provider bạn chọn..."
-              onChange={(apiKey) => setSettings((current) => ({ ...current, apiKey }))}
-            />
-            <TextInput
-              label="Model"
-              value={settings.model}
-              placeholder="Tên model"
-              onChange={(model) => setSettings((current) => ({ ...current, model }))}
-            />
-            <TextInput
-              label="Base URL"
-              value={settings.baseUrl}
-              placeholder="Để trống nếu dùng OpenAI"
-              onChange={(baseUrl) => setSettings((current) => ({ ...current, baseUrl }))}
-            />
+
+          <div className="workspace-content">
+            <header className="page-heading">
+              <div>
+                <span className="page-kicker">TRÌNH BIÊN TẬP AI</span>
+                <h2>{workflow === "write" ? "Sản xuất nội dung" : workflow === "improve" ? "Cải thiện nội dung" : "Phát triển ý tưởng"}</h2>
+                <p>Thiết lập brief, chọn cách triển khai và kiểm soát đầu ra trong cùng một không gian làm việc.</p>
+              </div>
+              <span className="mode-status">{MODES.find((item) => item.id === mode)?.label}</span>
+            </header>
+
+            <div className="editor-layout">
+              <div className="editor-column">
+                {workflow === "write" ? (
+                  <WriteForm mode={mode} brief={brief} patchBrief={patchBrief} applyTemplate={applyTemplate} onGuide={() => setShowTutorial(true)} />
+                ) : null}
+                {workflow === "improve" ? (
+                  <ImproveForm submode={improveSubmode} setSubmode={setImproveSubmode} brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} />
+                ) : null}
+                {workflow === "ideas" ? <IdeasForm brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} /> : null}
+
+                <div className="center-action">
+                  <button className="main-cta" type="button" disabled={isGenerating} onClick={generate}>
+                    {isGenerating ? "Đang xử lý..." : ctaLabel()}
+                  </button>
+                </div>
+                {error ? <div role="alert"><Notice tone="error">⚠ {error}</Notice></div> : null}
+                {status ? <div role="status" aria-live="polite"><Notice>Đang xử lý: {status}</Notice></div> : null}
+              </div>
+
+              <OutputSection output={output} briefSummary={briefSummary} history={history} loadHistory={loadHistory} regenerate={generate} />
+            </div>
           </div>
-        </details>
-
-        {workflow === "write" ? (
-          <WriteForm mode={mode} brief={brief} patchBrief={patchBrief} applyTemplate={applyTemplate} onGuide={() => setShowTutorial(true)} />
-        ) : null}
-        {workflow === "improve" ? (
-          <ImproveForm submode={improveSubmode} setSubmode={setImproveSubmode} brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} />
-        ) : null}
-        {workflow === "ideas" ? <IdeasForm brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} /> : null}
-
-        <div className="center-action">
-          <button className="main-cta" type="button" disabled={isGenerating} onClick={generate}>
-            {isGenerating ? "Đang xử lý..." : ctaLabel()}
-          </button>
         </div>
-
-        {error ? <Notice tone="error">⚠️ {error}</Notice> : null}
-        {status ? <Notice>⏳ {status}</Notice> : null}
-
-        <OutputSection output={output} briefSummary={briefSummary} history={history} loadHistory={loadHistory} regenerate={generate} />
         {mounted && showTutorial && (mode === "basic" || mode === "advanced") ? <TutorialOverlay onDone={() => setShowTutorial(false)} /> : null}
       </section>
     </main>
@@ -906,6 +907,12 @@ function TemplateStrip({ applyTemplate }) {
 function OutputSection({ output, briefSummary, history, loadHistory, regenerate }) {
   return (
     <section className="output-zone">
+      {!output ? (
+        <div className="output-empty">
+          <strong>Chưa có nội dung được tạo</strong>
+          <span>Kết quả sẽ xuất hiện tại đây sau khi bạn hoàn tất brief và bấm nút sản xuất nội dung.</span>
+        </div>
+      ) : null}
       <ResultBlock title="Kết quả" text={output} onRegenerate={regenerate} />
       <details className="brief-debug">
         <summary>Brief đang dùng</summary>

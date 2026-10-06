@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import "./ui-refresh.css";
+import "./enterprise.css";
 
 const inter = Inter({
   variable: "--font-sans",
