@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Sửa Bài - Trợ lý nâng cấp nội dung",
   description: "Viết lại sắc bén - Nâng cấp nội dung trong vài phút.",
   icons: {
-    icon: "/logo.png",
+    icon: "/favicon.svg",
   },
 };
 
