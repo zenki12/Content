@@ -28,29 +28,29 @@ const DEFAULT_SETTINGS = {
 };
 
 const MODES = [
-  { id: "entry", icon: "⚡", label: "Siêu tốc" },
-  { id: "basic", icon: "🔥", label: "Cơ bản" },
-  { id: "advanced", icon: "🔮", label: "Nâng cao" },
+  { id: "entry", icon: "⚡", label: "Siêu tốc", desc: "Brief ngắn, tạo nhanh" },
+  { id: "basic", icon: "🔥", label: "Cơ bản", desc: "Đủ thông tin cốt lõi" },
+  { id: "advanced", icon: "🔮", label: "Nâng cao", desc: "Kiểm soát chiến lược" },
 ];
 
 const WORKFLOWS = [
   {
     id: "write",
-    icon: "✍️",
-    title: "Viết nhanh",
-    desc: "Khi cần ngay nội dung, ý tưởng, dàn ý, kế hoạch sơ lược,...",
+    code: "VN",
+    title: "Viết nội dung",
+    desc: "Tạo bài viết, kịch bản và dàn ý",
   },
   {
     id: "improve",
-    icon: "✨",
-    title: "Đánh giá, cải thiện, viết lại nội dung",
-    desc: "Khi đã có bản cũ",
+    code: "CT",
+    title: "Cải thiện nội dung",
+    desc: "Đánh giá, viết lại hoặc học văn phong",
   },
   {
     id: "ideas",
-    icon: "💡",
-    title: "Gợi ý hook / ý tưởng",
-    desc: "Khi chưa biết làm gì",
+    code: "YT",
+    title: "Hook và ý tưởng",
+    desc: "Phát triển hướng nội dung mới",
   },
 ];
 
@@ -319,10 +319,10 @@ function ResultBlock({ title, text, onRegenerate }) {
         <div className="section-chip">{title}</div>
         <div className="result-actions">
           <button type="button" className="result-action-btn" onClick={copyText}>
-            {copied ? "✓ Đã copy" : "📋 Copy"}
+            {copied ? "Đã sao chép" : "Sao chép"}
           </button>
           <button type="button" className="result-action-btn regen" onClick={onRegenerate}>
-            🔁 Tạo lại
+            Tạo lại
           </button>
         </div>
       </div>
@@ -339,7 +339,7 @@ export default function GeneratorApp() {
   const [brief, setBrief] = useState(() => createEmptyBrief());
   const [history, setHistory] = useState([]);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const [showTutorial, setShowTutorial] = useState(false);
   const [output, setOutput] = useState("");
   const [status, setStatus] = useState("");
@@ -350,12 +350,12 @@ export default function GeneratorApp() {
     queueMicrotask(() => {
       const storedSettings = readJson(SETTINGS_KEY, {});
       const storedHistory = readJson(HISTORY_KEY, []);
-      const storedTheme = window.localStorage.getItem(THEME_KEY) || "dark";
+      const storedTheme = window.localStorage.getItem(THEME_KEY) || "light";
 
       setSettings({ ...DEFAULT_SETTINGS, ...storedSettings });
       setHistory(storedHistory);
       setTheme(storedTheme);
-      setShowTutorial(!window.localStorage.getItem(TUTORIAL_KEY));
+      setShowTutorial(false);
       setMounted(true);
     });
   }, []);
@@ -469,11 +469,11 @@ export default function GeneratorApp() {
   }
 
   function ctaLabel() {
-    if (workflow === "improve" && improveSubmode === "style") return "Viết Theo Văn Phong 🧬";
-    if (workflow === "improve") return "Cải Thiện Ngay ✨";
-    if (workflow === "ideas") return "Gợi ý hook / ý tưởng 💡";
-    if (mode === "entry") return "Tạo Nội Dung Ngay 🚀";
-    return "Sản Xuất Nội Dung 🚀";
+    if (workflow === "improve" && improveSubmode === "style") return "Viết theo văn phong";
+    if (workflow === "improve") return "Cải thiện nội dung";
+    if (workflow === "ideas") return "Tạo hook và ý tưởng";
+    if (mode === "entry") return "Tạo nội dung ngay";
+    return "Sản xuất nội dung";
   }
 
   return (
@@ -492,26 +492,29 @@ export default function GeneratorApp() {
 
           <div className="rail-group-label">Chế độ biên tập</div>
           <nav className="mode-tabs" aria-label="Chế độ biên tập">
-            {MODES.map((item, index) => (
+            {MODES.map((item) => (
               <button type="button" key={item.id} className={mode === item.id ? "active" : ""} onClick={() => selectMode(item.id)}>
-                <span className="nav-index">{index + 1}</span>
-                <span>{item.icon} {item.label}</span>
+                <span className="mode-glyph" aria-hidden="true">{item.icon}</span>
+                <span className="nav-copy">
+                  <strong>{item.label}</strong>
+                  <small>{item.desc}</small>
+                </span>
               </button>
             ))}
           </nav>
 
           <div className="rail-group-label">Nghiệp vụ nội dung</div>
           <nav className="workflow-tabs" aria-label="Nghiệp vụ nội dung">
-            {WORKFLOWS.map((item, index) => (
+            {WORKFLOWS.map((item) => (
               <button
                 type="button"
                 key={item.id}
                 className={workflow === item.id ? "active" : ""}
                 onClick={() => setWorkflow(item.id)}
               >
-                <span className="nav-index">{index + 4}</span>
-                <span>
-                  <strong>{item.icon} {item.title}</strong>
+                <span className="workflow-code" aria-hidden="true">{item.code}</span>
+                <span className="nav-copy">
+                  <strong>{item.title}</strong>
                   <small>{item.desc}</small>
                 </span>
               </button>
