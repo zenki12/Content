@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sửa Bài - Trợ lý nâng cấp nội dung",
-  description: "Viết lại sắc bén - Nâng cấp nội dung trong vài phút.",
+  title: "Sửa Bài - Bàn biên tập nội dung cùng AI",
+  description:
+    "Biến thông tin thô thành bản nội dung rõ ý, đúng mục tiêu và sẵn sàng sử dụng.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -35,7 +36,7 @@ export default function RootLayout({
             __html: `
   (function() {
     try {
-      var theme = localStorage.getItem('aica-theme') || 'light';
+      var theme = localStorage.getItem('sua-bai-theme') || 'light';
       document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {}
   })();

@@ -18,7 +18,7 @@ import {
 
 const HISTORY_KEY = "sua-bai-history";
 const SETTINGS_KEY = "sua-bai-settings";
-const THEME_KEY = "aica-theme";
+const THEME_KEY = "sua-bai-theme";
 const TUTORIAL_KEY = "sua-bai-tutorial-done";
 
 const DEFAULT_SETTINGS = {
@@ -28,59 +28,59 @@ const DEFAULT_SETTINGS = {
 };
 
 const MODES = [
-  { id: "entry", icon: "⚡", label: "Siêu tốc", desc: "Brief ngắn, tạo nhanh" },
-  { id: "basic", icon: "🔥", label: "Cơ bản", desc: "Đủ thông tin cốt lõi" },
-  { id: "advanced", icon: "🔮", label: "Nâng cao", desc: "Kiểm soát chiến lược" },
+  { id: "entry", icon: "⚡", label: "Tạo nhanh", desc: "Ít bước, có bản nháp ngay" },
+  { id: "basic", icon: "🔥", label: "Biên soạn", desc: "Điều khiển các yếu tố chính" },
+  { id: "advanced", icon: "🔮", label: "Chuyên sâu", desc: "Thiết kế nội dung có chủ đích" },
 ];
 
 const WORKFLOWS = [
   {
     id: "write",
     code: "VN",
-    title: "Viết nội dung",
-    desc: "Tạo bài viết, kịch bản và dàn ý",
+    title: "Soạn mới",
+    desc: "Tạo bài đăng, kịch bản hoặc dàn ý",
   },
   {
     id: "improve",
     code: "CT",
-    title: "Cải thiện nội dung",
-    desc: "Đánh giá, viết lại hoặc học văn phong",
+    title: "Chỉnh sửa",
+    desc: "Nâng chất lượng một bản viết có sẵn",
   },
   {
     id: "ideas",
     code: "YT",
-    title: "Hook và ý tưởng",
-    desc: "Phát triển hướng nội dung mới",
+    title: "Mở hướng",
+    desc: "Tìm góc tiếp cận và ý tưởng triển khai",
   },
 ];
 
 const QUICK_FEELINGS = [
-  "😄 Vui vẻ, hài hước",
-  "🥰 Chia sẻ, đồng cảm",
-  "🦉 Chuyên nghiệp, đáng tin cậy",
-  "🔥 Thúc giục, tạo sự khan hiếm",
+  "😄 Tươi vui, gần gũi",
+  "🥰 Chân thành, thấu hiểu",
+  "🦉 Chắc chắn, đáng tin",
+  "🔥 Khẩn trương, thôi thúc",
 ];
 
 const BRAND_PURPOSES = [
-  "📢 Quảng bá sản phẩm / dịch vụ",
-  "📚 Tạo cộng đồng cho doanh nghiệp",
-  "🌟 Xây dựng thương hiệu cá nhân",
+  "📢 Giới thiệu giải pháp",
+  "📚 Nuôi dưỡng cộng đồng",
+  "🌟 Tạo dấu ấn cá nhân",
 ];
 
-const IDEA_COUNTS = ["3 ý tưởng", "5 ý tưởng", "7 ý tưởng", "10 ý tưởng"];
+const IDEA_COUNTS = ["3 hướng", "5 hướng", "7 hướng", "10 hướng"];
 
 const TUTORIAL_STEPS = [
   {
-    title: "Chào mừng đến với Sửa Bài",
-    body: "Bạn có thể chọn chế độ Siêu tốc, Cơ bản hoặc Nâng cao, sau đó chọn đúng workflow để AI tạo nội dung theo brief.",
+    title: "Chọn cách bạn muốn bắt đầu",
+    body: "Tạo nhanh dành cho một yêu cầu gọn. Biên soạn giúp kiểm soát các yếu tố chính. Chuyên sâu phù hợp với nội dung cần định hướng chiến lược.",
   },
   {
-    title: "Điền brief càng rõ, output càng tốt",
-    body: "Các ô sản phẩm, khách hàng mục tiêu, kênh triển khai và mục tiêu marketing là phần quan trọng nhất.",
+    title: "Cung cấp đúng dữ liệu đầu vào",
+    body: "Hãy ưu tiên thông tin về giải pháp, người đọc, mục tiêu và kênh đăng. Hệ thống sẽ dựa vào đó để đưa ra bản viết phù hợp.",
   },
   {
-    title: "Prompt bổ sung là nơi đặt luật chơi",
-    body: "Bạn có thể yêu cầu giọng văn, độ dài, cách xưng hô, CTA, hoặc những điều tuyệt đối không được dùng.",
+    title: "Chốt tiêu chuẩn cho bản viết",
+    body: "Tại mục Yêu cầu riêng, bạn có thể quy định cách xưng hô, độ dài, lời kêu gọi hành động và những điều cần tránh.",
   },
 ];
 
@@ -106,11 +106,11 @@ function updateArray(current, value) {
 }
 
 function RequiredBadge() {
-  return <b className="required-badge">BẮT BUỘC</b>;
+  return <b className="required-badge">CẦN NHẬP</b>;
 }
 
 function OptionalHint() {
-  return <span className="optional-hint">(tùy chọn)</span>;
+  return <span className="optional-hint">(không bắt buộc)</span>;
 }
 
 function FieldLabel({ children, required, optional, hint }) {
@@ -121,7 +121,7 @@ function FieldLabel({ children, required, optional, hint }) {
       {optional ? <OptionalHint /> : null}
       {hint ? (
         <button className="suggest-mini" type="button">
-          💡 Gợi ý
+          Gợi mở
         </button>
       ) : null}
     </div>
@@ -195,14 +195,14 @@ function PillGroup({ label, options, value, onChange, multi = false, required, o
             </button>
           ))}
         <button type="button" className="choice-pill muted" onClick={() => setShowCustom((current) => !current)}>
-          ➕ Khác
+          Thêm lựa chọn
         </button>
       </div>
       {showCustom ? (
         <div className="custom-pill-input">
           <input
             value={customValue}
-            placeholder="Nhập tùy chọn của bạn..."
+            placeholder="Nhập lựa chọn khác..."
             onChange={(event) => setCustomValue(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -213,7 +213,7 @@ function PillGroup({ label, options, value, onChange, multi = false, required, o
             autoFocus
           />
           <button type="button" className="add-custom-btn" onClick={addCustom}>
-            Thêm
+            Xác nhận
           </button>
         </div>
       ) : null}
@@ -271,14 +271,14 @@ function TutorialOverlay({ onDone }) {
         </div>
         <div className="tutorial-actions">
           <button type="button" className="tutorial-skip" onClick={finish}>
-            Bỏ qua
+          Đóng hướng dẫn
           </button>
           <button
             type="button"
             className="tutorial-next"
             onClick={() => (step < TUTORIAL_STEPS.length - 1 ? setStep(step + 1) : finish())}
           >
-            {step < TUTORIAL_STEPS.length - 1 ? "Tiếp →" : "Hoàn tất ✓"}
+            {step < TUTORIAL_STEPS.length - 1 ? "Xem tiếp" : "Bắt đầu"}
           </button>
         </div>
       </div>
@@ -291,11 +291,10 @@ function Notice({ tone = "purple", children, action = false, onGuide }) {
     return (
       <div className={`notice ${tone} notice-with-action`}>
         <span>
-          💡 Ô nào không rõ thông tin, nhập chữ: <b className="highlight-keyword">&quot;ngẫu nhiên&quot;</b>, AI sẽ tự đề
-          xuất.
+          Chưa có đủ thông tin? Nhập <b className="highlight-keyword">&quot;để hệ thống đề xuất&quot;</b> tại trường tương ứng.
         </span>
         <button className="guide-btn" type="button" onClick={onGuide}>
-          📖 Xem hướng dẫn
+          Cách sử dụng
         </button>
       </div>
     );
@@ -393,25 +392,25 @@ export default function GeneratorApp() {
     });
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data?.error || "Không gọi được AI backend local.");
+      throw new Error(data?.error || "Hệ thống chưa kết nối được với mô hình AI. Vui lòng kiểm tra cấu hình và thử lại.");
     }
     return data.text || "";
   }
 
   function validate() {
-    if (!settings.apiKey.trim()) return "Bạn cần nhập API key trong Cấu hình AI.";
+    if (!settings.apiKey.trim()) return "Hãy thêm API key trong mục Kết nối AI trước khi tạo nội dung.";
     if (workflow === "write") {
-      if (mode === "entry" && !brief.topic.trim()) return "Chế độ Siêu tốc cần ít nhất chủ đề bài viết.";
-      if (mode !== "entry" && !brief.product.trim()) return "Bạn cần nhập thông tin sản phẩm / dịch vụ.";
+      if (mode === "entry" && !brief.topic.trim()) return "Hãy cho biết chủ đề bạn muốn triển khai.";
+      if (mode !== "entry" && !brief.product.trim()) return "Hãy mô tả sản phẩm, dịch vụ hoặc vấn đề cần truyền đạt.";
     }
     if (workflow === "improve" && improveSubmode === "improve" && !brief.sourceContent.trim()) {
-      return "Bạn cần dán nội dung cần cải thiện.";
+      return "Hãy dán bản nội dung bạn muốn chỉnh sửa.";
     }
     if (workflow === "improve" && improveSubmode === "style") {
-      if (!brief.styleSample.trim()) return "Bạn cần dán văn bản mẫu để AI học văn phong.";
-      if (!brief.styleTopic.trim()) return "Bạn cần nhập chủ đề muốn triển khai theo văn phong.";
+      if (!brief.styleSample.trim()) return "Hãy cung cấp một đoạn mẫu để hệ thống nhận diện cách viết.";
+      if (!brief.styleTopic.trim()) return "Hãy nhập chủ đề cần viết theo phong cách vừa phân tích.";
     }
-    if (workflow === "ideas" && !brief.product.trim()) return "Bạn cần nhập sản phẩm / dịch vụ.";
+    if (workflow === "ideas" && !brief.product.trim()) return "Hãy cho biết đối tượng hoặc giải pháp cần phát triển ý tưởng.";
     return "";
   }
 
@@ -422,7 +421,7 @@ export default function GeneratorApp() {
 
     setOutput("");
     setIsGenerating(true);
-    setStatus("Đang sản xuất nội dung...");
+    setStatus("Đang tạo bản viết theo thông tin bạn cung cấp...");
     try {
       const prompt = compilePromptByWorkflow({ workflow, improveSubmode, mode, brief });
       const text = await callGenerate([
@@ -438,7 +437,7 @@ export default function GeneratorApp() {
         improveSubmode,
         brief,
         output: text,
-        title: brief.topic || brief.product || brief.styleTopic || "Nội dung mới",
+        title: brief.topic || brief.product || brief.styleTopic || "Bản viết chưa đặt tên",
       };
       const next = [item, ...history].slice(0, 40);
       setHistory(next);
@@ -469,29 +468,29 @@ export default function GeneratorApp() {
   }
 
   function ctaLabel() {
-    if (workflow === "improve" && improveSubmode === "style") return "Viết theo văn phong";
-    if (workflow === "improve") return "Cải thiện nội dung";
-    if (workflow === "ideas") return "Tạo hook và ý tưởng";
-    if (mode === "entry") return "Tạo nội dung ngay";
-    return "Sản xuất nội dung";
+    if (workflow === "improve" && improveSubmode === "style") return "Tạo bản viết theo mẫu";
+    if (workflow === "improve") return "Chỉnh sửa bản viết";
+    if (workflow === "ideas") return "Mở danh sách ý tưởng";
+    if (mode === "entry") return "Tạo bản nháp";
+    return "Tạo bản nội dung";
   }
 
   return (
-    <main className="oneprompt-page">
-      <section className="oneprompt-card">
+    <main className="sua-bai-page">
+      <section className="sua-bai-workspace">
         <aside className="workspace-rail">
           <header className="brand-head">
             <div className="brand-lockup">
               <div className="logo-mark">SB</div>
               <div>
                 <h1>Sửa Bài</h1>
-                <p>Trợ lý nâng cấp nội dung</p>
+                <p>Không gian biên tập cùng AI</p>
               </div>
             </div>
           </header>
 
-          <div className="rail-group-label">Chế độ biên tập</div>
-          <nav className="mode-tabs" aria-label="Chế độ biên tập">
+          <div className="rail-group-label">Mức độ kiểm soát</div>
+          <nav className="mode-tabs" aria-label="Mức độ kiểm soát nội dung">
             {MODES.map((item) => (
               <button type="button" key={item.id} className={mode === item.id ? "active" : ""} onClick={() => selectMode(item.id)}>
                 <span className="mode-glyph" aria-hidden="true">{item.icon}</span>
@@ -503,8 +502,8 @@ export default function GeneratorApp() {
             ))}
           </nav>
 
-          <div className="rail-group-label">Nghiệp vụ nội dung</div>
-          <nav className="workflow-tabs" aria-label="Nghiệp vụ nội dung">
+          <div className="rail-group-label">Bạn muốn làm gì?</div>
+          <nav className="workflow-tabs" aria-label="Tác vụ nội dung">
             {WORKFLOWS.map((item) => (
               <button
                 type="button"
@@ -522,7 +521,7 @@ export default function GeneratorApp() {
           </nav>
 
           <details className="ai-settings">
-            <summary>⚙ Cấu hình AI</summary>
+            <summary>Kết nối AI</summary>
             <div className="model-grid">
               {MODEL_PRESETS.map((preset) => {
                 const active = settings.model === preset.model && (settings.baseUrl || "") === preset.baseUrl;
@@ -542,37 +541,37 @@ export default function GeneratorApp() {
               })}
             </div>
             <div className="settings-fields">
-              <TextInput label="API key" value={settings.apiKey} placeholder="Dán API key..." onChange={(apiKey) => setSettings((current) => ({ ...current, apiKey }))} />
-              <TextInput label="Model" value={settings.model} placeholder="Tên model" onChange={(model) => setSettings((current) => ({ ...current, model }))} />
-              <TextInput label="Base URL" value={settings.baseUrl} placeholder="Để trống nếu dùng OpenAI" onChange={(baseUrl) => setSettings((current) => ({ ...current, baseUrl }))} />
+              <TextInput label="Khóa truy cập API" value={settings.apiKey} placeholder="Nhập khóa của nhà cung cấp..." onChange={(apiKey) => setSettings((current) => ({ ...current, apiKey }))} />
+              <TextInput label="Mô hình" value={settings.model} placeholder="Tên mô hình AI" onChange={(model) => setSettings((current) => ({ ...current, model }))} />
+              <TextInput label="Địa chỉ API tùy chỉnh" value={settings.baseUrl} placeholder="Có thể để trống khi dùng OpenAI" onChange={(baseUrl) => setSettings((current) => ({ ...current, baseUrl }))} />
             </div>
           </details>
 
-          <div className="rail-foot">Viết lại sắc bén · Nâng cấp nội dung trong vài phút.</div>
+          <div className="rail-foot">Từ thông tin thô đến một bản viết có mục tiêu.</div>
         </aside>
 
         <div className="workspace-main">
           <div className="top-bar">
             <div className="top-context">
-              <span>Không gian làm việc</span>
-              <strong>Nội dung thương hiệu</strong>
+              <span>Sửa Bài</span>
+              <strong>Bàn biên tập</strong>
             </div>
             <div className="top-actions">
-              <button className="intro-btn" type="button" onClick={() => setShowTutorial(true)}>Hướng dẫn</button>
+              <button className="intro-btn" type="button" onClick={() => setShowTutorial(true)}>Cách dùng</button>
               <button className="theme-toggle" type="button" aria-label="Đổi giao diện" onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
-                {theme === "dark" ? "Chế độ sáng" : "Chế độ tối"}
+                {theme === "dark" ? "Nền sáng" : "Nền tối"}
               </button>
-              <button className="service-btn" type="button">Gói dịch vụ</button>
-              <button className="login-btn" type="button">Đăng nhập</button>
+              <button className="service-btn" type="button">Nâng cấp</button>
+              <button className="login-btn" type="button">Tài khoản</button>
             </div>
           </div>
 
           <div className="workspace-content">
             <header className="page-heading">
               <div>
-                <span className="page-kicker">TRÌNH BIÊN TẬP AI</span>
-                <h2>{workflow === "write" ? "Sản xuất nội dung" : workflow === "improve" ? "Cải thiện nội dung" : "Phát triển ý tưởng"}</h2>
-                <p>Thiết lập brief, chọn cách triển khai và kiểm soát đầu ra trong cùng một không gian làm việc.</p>
+                <span className="page-kicker">BÀN BIÊN TẬP</span>
+                <h2>{workflow === "write" ? "Tạo một bản viết mới" : workflow === "improve" ? "Làm tốt hơn bản hiện có" : "Tìm hướng triển khai"}</h2>
+                <p>Đưa thông tin vào, chọn mức kiểm soát và nhận bản nội dung phù hợp với mục tiêu sử dụng.</p>
               </div>
               <span className="mode-status">{MODES.find((item) => item.id === mode)?.label}</span>
             </header>
@@ -611,37 +610,37 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
     return (
       <section className="form-section">
         <Notice tone="blue">
-          ⚡ <strong>Chế độ Siêu Tốc</strong>
+          ⚡ <strong>Tạo nhanh</strong>
           <br />
-          Dành cho người mới bắt đầu!
+          Đi thẳng từ ý định đến bản nháp đầu tiên.
         </Notice>
-        <p className="center-note">Chỉ cần trả lời vài câu hỏi, có ngay bài viết / kịch bản bán hàng hoặc review sản phẩm.</p>
+        <p className="center-note">Cung cấp bối cảnh ngắn, chủ đề, sắc thái và nơi đăng. Phần còn lại sẽ được hệ thống đề xuất.</p>
         <Notice action onGuide={onGuide} />
         <TemplateStrip applyTemplate={applyTemplate} />
         <TextArea
-          label="1. Sản phẩm của bạn là gì? Hướng đến đối tượng khách hàng nào?"
+          label="Bạn đang muốn giới thiệu điều gì, cho ai?"
           optional
           rows={4}
           value={brief.product}
-          placeholder="Ví dụ: Son dưỡng môi hữu cơ, dành cho Gen Z, giá tầm 150k, đang muốn quảng bá trên TikTok..."
+          placeholder="Ví dụ: Dịch vụ giao rau sạch theo tuần dành cho gia đình trẻ bận rộn tại TP.HCM..."
           onChange={(product) => patchBrief({ product })}
         />
         <TextInput
-          label="2. Hôm nay, bạn muốn viết về chủ đề gì?"
+          label="Trọng tâm của bản viết là gì?"
           required
           value={brief.topic}
-          placeholder='Ví dụ: "son dưỡng môi cho da nhạy cảm", "review quán cafe mới mở"...'
+          placeholder="Ví dụ: Vì sao đặt rau theo tuần giúp gia đình tiết kiệm thời gian và hạn chế lãng phí"
           onChange={(topic) => patchBrief({ topic })}
         />
         <PillGroup
-          label="3. Bạn muốn bài viết này mang lại cảm giác gì?"
+          label="Người đọc nên cảm nhận điều gì?"
           required
           options={QUICK_FEELINGS}
           value={brief.feeling}
           onChange={(feeling) => patchBrief({ feeling })}
         />
         <PillGroup
-          label="4. Bạn sẽ đăng bài viết này ở đâu?"
+          label="Nội dung sẽ xuất hiện ở đâu?"
           required
           options={["Facebook", "TikTok (kịch bản video ngắn)", "Instagram", "Website/Blog"]}
           value={brief.channel}
@@ -649,8 +648,8 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
         />
         <ExtraPromptField mode={mode} brief={brief} patchBrief={patchBrief} />
         <PillGroup
-          label="Số phiên bản nội dung"
-          maxItems="Tối đa 10 phiên bản"
+          label="Số phương án cần nhận"
+          maxItems="Bạn có thể tạo tối đa 10 phương án"
           options={["1", "2", "3", "5", "10"]}
           value={brief.variantCount}
           onChange={(variantCount) => patchBrief({ variantCount })}
@@ -665,9 +664,9 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
         <Notice action onGuide={onGuide} />
         <div className="mode-intro mode-intro-advanced">
           <div>
-            <div className="section-chip purple">NÂNG CAO</div>
-            <h2>Brief chiến lược cho nội dung cần kiểm soát sâu</h2>
-            <p>Chọn tuyến nội dung, thông điệp, công thức, văn phong, CTA và tỷ lệ diễn đạt trước khi điền brief chung.</p>
+            <div className="section-chip purple">CHUYÊN SÂU</div>
+            <h2>Thiết kế logic truyền đạt trước khi viết</h2>
+            <p>Xác lập góc tiếp cận, thông điệp, cấu trúc thuyết phục, giọng điệu và hành động mong muốn.</p>
           </div>
         </div>
         <AdvancedWriteFields brief={brief} patchBrief={patchBrief} />
@@ -681,9 +680,9 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
       <Notice action onGuide={onGuide} />
       <div className="mode-intro">
         <div>
-          <div className="section-chip">CƠ BẢN</div>
-          <h2>Brief chuẩn để tạo nội dung nhanh</h2>
-          <p>Điền những thông tin cốt lõi về sản phẩm, khách hàng, kênh triển khai và mục tiêu đầu ra.</p>
+          <div className="section-chip">BIÊN SOẠN</div>
+          <h2>Xây bản viết từ những dữ liệu quan trọng</h2>
+          <p>Mô tả điều cần truyền đạt, người cần thuyết phục, mục tiêu sử dụng và hình thức đầu ra.</p>
         </div>
       </div>
       <BasicBriefFields mode={mode} brief={brief} patchBrief={patchBrief} />
@@ -695,48 +694,48 @@ function BasicBriefFields({ mode, brief, patchBrief }) {
   return (
     <>
       <PillGroup
-        label="Thương hiệu / Sản phẩm & Mục đích"
+        label="Vai trò của nội dung này"
         required
         options={BRAND_PURPOSES}
         value={brief.goals?.[0] || BRAND_PURPOSES[0]}
         onChange={(goal) => patchBrief({ goals: [goal] })}
       />
       <TextArea
-        label="Thông tin sản phẩm / dịch vụ"
+        label="Thông tin nền cần đưa vào bản viết"
         required
         rows={4}
         value={brief.product}
-        placeholder="Ví dụ: Tôi cần quảng bá sản phẩm phần mềm quản lý Fanpage tự động F-Manager..."
+        placeholder="Mô tả giải pháp, điểm khác biệt, mức giá, ưu đãi và điều người đọc cần hiểu..."
         onChange={(product) => patchBrief({ product })}
       >
-        <p className="field-hint">💡 Nhập USP, điểm khác biệt, giá, ưu đãi hoặc file tham khảo nếu có.</p>
+        <p className="field-hint">Thông tin càng cụ thể, bản viết càng ít chung chung.</p>
       </TextArea>
       <PillGroup
-        label="Bạn đã có ý tưởng / Hook chưa?"
-        options={["Đã có", "Chưa (Để AI ngẫu nhiên)"]}
+        label="Bạn đã có câu mở đầu hoặc góc tiếp cận chưa?"
+        options={["Tôi đã có hướng", "Để hệ thống đề xuất"]}
         value={brief.hasHook}
         onChange={(hasHook) => patchBrief({ hasHook })}
       />
-      <PillGroup label="Kênh triển khai" required multi options={CHANNELS} value={brief.channels} onChange={(channels) => patchBrief({ channels })} />
+      <PillGroup label="Nơi nội dung được sử dụng" required multi options={CHANNELS} value={brief.channels} onChange={(channels) => patchBrief({ channels })} />
       <TextArea
-        label="Khách hàng mục tiêu / khán giả mục tiêu"
+        label="Người đọc bạn muốn tác động"
         required
         hint
         rows={4}
         value={brief.audience}
-        placeholder="Ví dụ: Minh Anh, 24 tuổi, ở TP.HCM... Insight: cô ấy không chỉ sợ thuyết trình..."
+        placeholder="Ví dụ: Quản lý nhóm 28-40 tuổi, thường thiếu thời gian tổng hợp báo cáo và ngại thay đổi công cụ..."
         onChange={(audience) => patchBrief({ audience })}
       >
-        <p className="field-hint">💡 Bao gồm: chân dung khách hàng, insight, nỗi đau, vấn đề. Càng chi tiết càng tốt.</p>
+        <p className="field-hint">Nêu hoàn cảnh, nhu cầu, rào cản và điều khiến họ cân nhắc hành động.</p>
       </TextArea>
-      <PillGroup label="Mục tiêu kinh doanh / marketing" required multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
-      <PillGroup label="Mục tiêu đầu ra" required multi options={FORMATS} value={brief.formats} onChange={(formats) => patchBrief({ formats })} />
-      <PillGroup label="Định dạng nội dung" options={["Text trơn", "Bảng"]} value={brief.contentShape} onChange={(contentShape) => patchBrief({ contentShape })} />
-      <PillGroup label="Độ dài nội dung" options={["Số từ", "Số giây", "Số đoạn"]} value={brief.lengthType} onChange={(lengthType) => patchBrief({ lengthType })} />
+      <PillGroup label="Kết quả truyền thông mong muốn" required multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
+      <PillGroup label="Loại bản thảo cần tạo" required multi options={FORMATS} value={brief.formats} onChange={(formats) => patchBrief({ formats })} />
+      <PillGroup label="Cách trình bày" options={["Văn bản", "Bảng thông tin"]} value={brief.contentShape} onChange={(contentShape) => patchBrief({ contentShape })} />
+      <PillGroup label="Đơn vị đo độ dài" options={["Số từ", "Thời lượng", "Số đoạn"]} value={brief.lengthType} onChange={(lengthType) => patchBrief({ lengthType })} />
       <ExtraPromptField mode={mode} brief={brief} patchBrief={patchBrief} />
       <PillGroup
-        label="Số phiên bản nội dung"
-        maxItems="Tối đa 10 phiên bản"
+        label="Số phương án cần nhận"
+        maxItems="Bạn có thể tạo tối đa 10 phương án"
         options={["1", "2", "3", "5", "10"]}
         value={brief.variantCount}
         onChange={(variantCount) => patchBrief({ variantCount })}
@@ -749,19 +748,19 @@ function ExtraPromptField({ mode, brief, patchBrief }) {
   return (
     <>
       <TextArea
-        label="Prompt bổ sung"
+        label="Yêu cầu riêng cho bản viết"
         optional
         rows={mode === "advanced" ? 4 : 3}
         value={brief.extra}
         placeholder={`Ví dụ:
-- Không dùng từ sáo rỗng
-- Tác giả xưng "mình", gọi người đọc là "các bạn"
-- Đoạn mở đầu bắt buộc là một câu hỏi gây sốc hoặc tò mò
-- Không viết câu nào dài quá 20 chữ`}
+- Xưng "chúng tôi", gọi người đọc là "bạn"
+- Không dùng lời hứa tuyệt đối hoặc số liệu chưa được cung cấp
+- Mở đầu bằng một tình huống quen thuộc
+- Mỗi đoạn không quá ba câu`}
         onChange={(extra) => patchBrief({ extra })}
       />
       <p className="power-hint">
-        💡 <strong>Quyền lực tối đa:</strong> Đây là nơi bạn thiết lập luật chơi riêng với hệ thống.
+        <strong>Tiêu chuẩn biên tập:</strong> Những yêu cầu tại đây sẽ được ưu tiên khi tạo bản viết.
       </p>
     </>
   );
@@ -771,38 +770,38 @@ function AdvancedWriteFields({ brief, patchBrief }) {
   return (
     <section className="advanced-panel">
       <PillGroup
-        label="AI gợi ý / Ngẫu nhiên / Tự chọn"
-        options={["AI gợi ý", "Ngẫu nhiên", "Tự chọn"]}
-        value={brief.advancedMode || "AI gợi ý"}
+        label="Cách xác định chiến lược triển khai"
+        options={["Hệ thống đề xuất", "Khám phá phương án mới", "Tôi tự thiết lập"]}
+        value={brief.advancedMode || "Hệ thống đề xuất"}
         onChange={(advancedMode) => patchBrief({ advancedMode })}
       />
-      <Notice>💡 AI sẽ tự động chọn tuyến nội dung, thông điệp, công thức, văn phong và CTA phù hợp nhất cho nội dung của bạn.</Notice>
-      <PillGroup label="Tuyến nội dung" optional multi options={CONTENT_LINES} value={brief.contentLines} onChange={(contentLines) => patchBrief({ contentLines })} />
-      <TextArea label="Thông điệp chính" optional rows={3} value={brief.mainMessage} placeholder="Ngẫu nhiên" onChange={(mainMessage) => patchBrief({ mainMessage })} />
-      <TextArea label="Thông điệp phụ" optional rows={3} value={brief.subMessage} placeholder="Ngẫu nhiên" onChange={(subMessage) => patchBrief({ subMessage })} />
-      <PillGroup label="Công thức nội dung" multi options={FORMULAS} value={[brief.formula]} onChange={(values) => patchBrief({ formula: values.at(-1) || "AIDA" })} />
-      <PillGroup label="Văn phong" multi options={CONTENT_STYLES} value={[brief.style]} onChange={(values) => patchBrief({ style: values.at(-1) || "Kể chuyện" })} />
+      <Notice>Hệ thống có thể đề xuất góc tiếp cận, cấu trúc, giọng điệu và lời kêu gọi hành động dựa trên dữ liệu nền.</Notice>
+      <PillGroup label="Góc triển khai" optional multi options={CONTENT_LINES} value={brief.contentLines} onChange={(contentLines) => patchBrief({ contentLines })} />
+      <TextArea label="Ý chính người đọc cần nhớ" optional rows={3} value={brief.mainMessage} placeholder="Để hệ thống đề xuất" onChange={(mainMessage) => patchBrief({ mainMessage })} />
+      <TextArea label="Ý bổ trợ cần đưa vào" optional rows={3} value={brief.subMessage} placeholder="Để hệ thống đề xuất" onChange={(subMessage) => patchBrief({ subMessage })} />
+      <PillGroup label="Khung thuyết phục" multi options={FORMULAS} value={[brief.formula]} onChange={(values) => patchBrief({ formula: values.at(-1) || "AIDA" })} />
+      <PillGroup label="Giọng thể hiện" multi options={CONTENT_STYLES} value={[brief.style]} onChange={(values) => patchBrief({ style: values.at(-1) || "Kể chuyện" })} />
       <PillGroup
-        label="Bạn muốn khách hàng / độc giả làm gì?"
-        options={["Mua ngay", "Để lại thông tin", "Đăng ký nhận tài liệu", "Follow kênh", "Tag bạn bè", "Bình luận", "Chia sẻ nội dung", "Săn sale ngay"]}
+        label="Hành động mong muốn sau khi đọc"
+        options={["Tìm hiểu sản phẩm", "Để lại thông tin", "Nhận tài liệu", "Theo dõi kênh", "Gửi cho người quen", "Tham gia thảo luận", "Chia sẻ bài viết", "Xem ưu đãi"]}
         value={brief.cta}
         onChange={(cta) => patchBrief({ cta })}
       />
       <RatioSlider
-        label="Tỷ lệ Văn nói – Văn viết"
+        label="Mức độ hội thoại và trang trọng"
         value={brief.vocabRatioValue ?? 50}
         onChange={(vocabRatioValue) => patchBrief({ vocabRatioValue })}
-        leftLabel="Văn nói"
-        rightLabel="Văn viết"
+        leftLabel="Gần lời nói"
+        rightLabel="Trang trọng"
       />
       <RatioSlider
-        label="Tỷ lệ Định tính – Định lượng"
+        label="Mức độ cảm nhận và dữ liệu"
         value={brief.qualityRatioValue ?? 50}
         onChange={(qualityRatioValue) => patchBrief({ qualityRatioValue })}
-        leftLabel="Định tính"
-        rightLabel="Định lượng"
+        leftLabel="Cảm nhận"
+        rightLabel="Dữ liệu"
       />
-      <TextArea label="Số liệu - bằng chứng uy tín" optional hint rows={3} value={brief.evidence} placeholder="Ngẫu nhiên" onChange={(evidence) => patchBrief({ evidence })} />
+      <TextArea label="Thông tin kiểm chứng có thể sử dụng" optional hint rows={3} value={brief.evidence} placeholder="Nêu nguồn, số liệu hoặc để hệ thống bỏ qua mục này" onChange={(evidence) => patchBrief({ evidence })} />
     </section>
   );
 }
@@ -813,48 +812,48 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
       <Notice action onGuide={onGuide} />
       <div className="submode-tabs">
         <button type="button" className={submode === "improve" ? "active" : ""} onClick={() => setSubmode("improve")}>
-          ✨ Đánh giá, cải thiện nội dung
+          Chỉnh sửa bản hiện có
         </button>
         <button type="button" className={submode === "style" ? "active" : ""} onClick={() => setSubmode("style")}>
-          🧬 Học văn phong → viết bài mới
+          Viết mới theo mẫu tham chiếu
         </button>
       </div>
       {submode === "improve" ? (
         <>
           <TextArea
-            label="Dán nội dung cần cải thiện vào đây"
+            label="Bản nội dung cần chỉnh sửa"
             required
             rows={7}
             value={brief.sourceContent}
-            placeholder="Dán nội dung bạn đã có ở đây... Ví dụ: bài đăng Facebook cũ, chú thích bài đăng, kịch bản video..."
+            placeholder="Dán bài đăng, email, kịch bản hoặc đoạn văn bạn muốn làm rõ và nâng chất lượng..."
             onChange={(sourceContent) => patchBrief({ sourceContent })}
           />
-          <PillGroup label="Bạn muốn cải thiện phần nào?" optional multi options={IMPROVE_TYPES} value={brief.improveTypes} onChange={(improveTypes) => patchBrief({ improveTypes })} />
+          <PillGroup label="Bạn muốn thay đổi điều gì?" optional multi options={IMPROVE_TYPES} value={brief.improveTypes} onChange={(improveTypes) => patchBrief({ improveTypes })} />
         </>
       ) : (
         <>
           <TextArea
-            label="Dán văn bản gốc để AI phân tích cấu trúc, giọng điệu và từ vựng"
+            label="Mẫu viết dùng để tham chiếu phong cách"
             required
             rows={7}
             value={brief.styleSample}
-            placeholder="Dán bài viết mẫu có văn phong (DNA) bạn muốn AI học theo..."
+            placeholder="Dán một đoạn thể hiện rõ nhịp câu, cách dùng từ và sắc thái bạn muốn giữ lại..."
             onChange={(styleSample) => patchBrief({ styleSample })}
           />
           <TextArea
-            label="Nhập chủ đề bạn muốn tôi triển khai theo văn phong / DNA trên"
+            label="Nội dung mới cần triển khai"
             required
             rows={4}
             value={brief.styleTopic}
-            placeholder="Ví dụ: Giới thiệu khoá học Marketing, review serum Vitamin C..."
+            placeholder="Ví dụ: Thư giới thiệu chương trình đào tạo quản lý cho doanh nghiệp vừa..."
             onChange={(styleTopic) => patchBrief({ styleTopic })}
           />
           <TextArea
-            label="Đưa ra yêu cầu khác"
+            label="Điều kiện bổ sung"
             optional
             rows={4}
             value={brief.styleExtra}
-            placeholder='Ví dụ: "Viết 2 phiên bản", "Độ dài khoảng 300 chữ", "Thêm CTA cuối bài"...'
+            placeholder="Ví dụ: Tạo hai phương án, khoảng 300 từ, kết thúc bằng lời mời đăng ký tư vấn..."
             onChange={(styleExtra) => patchBrief({ styleExtra })}
           />
         </>
@@ -868,25 +867,25 @@ function IdeasForm({ brief, patchBrief, onGuide }) {
     <section className="form-section">
       <Notice action onGuide={onGuide} />
       <TextInput
-        label="Sản phẩm / Dịch vụ"
+        label="Chủ thể cần phát triển ý tưởng"
         hint
         value={brief.product}
-        placeholder="Ví dụ: Kem chống nắng Hàn Quốc, Khoá học Marketing..."
+        placeholder="Ví dụ: Ứng dụng quản lý chi tiêu dành cho người mới đi làm..."
         onChange={(product) => patchBrief({ product })}
       />
       <TextArea
-        label="Khách hàng mục tiêu / khán giả mục tiêu"
+        label="Nhóm người bạn muốn tiếp cận"
         required
         hint
         rows={4}
         value={brief.audience}
-        placeholder="Ví dụ: Minh Anh, 24 tuổi... Insight: cô ấy không chỉ sợ thuyết trình..."
+        placeholder="Ví dụ: Người mới đi làm 22-28 tuổi, thu nhập chưa ổn định, muốn quản lý tiền nhưng ngại ghi chép..."
         onChange={(audience) => patchBrief({ audience })}
       >
-        <p className="field-hint">💡 Bao gồm: chân dung khách hàng, insight, nỗi đau, vấn đề. Càng chi tiết càng tốt.</p>
+        <p className="field-hint">Mô tả hoàn cảnh, nhu cầu, rào cản và điều họ đang quan tâm.</p>
       </TextArea>
-      <PillGroup label="Mục tiêu kinh doanh / marketing" multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
-      <PillGroup label="Số lượng ý tưởng" maxItems="Tối đa 50" options={IDEA_COUNTS} value={brief.ideaCount} onChange={(ideaCount) => patchBrief({ ideaCount })} />
+      <PillGroup label="Kết quả muốn hướng tới" multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
+      <PillGroup label="Số hướng triển khai" maxItems="Có thể yêu cầu tối đa 50 hướng" options={IDEA_COUNTS} value={brief.ideaCount} onChange={(ideaCount) => patchBrief({ ideaCount })} />
     </section>
   );
 }
@@ -894,8 +893,8 @@ function IdeasForm({ brief, patchBrief, onGuide }) {
 function TemplateStrip({ applyTemplate }) {
   return (
     <section className="template-strip">
-      <strong>⚡ Bắt đầu nhanh</strong>
-      <span>Chọn 1 template - toàn bộ form sẽ tự điền, bạn chỉ cần chỉnh nhẹ.</span>
+      <strong>Dùng tình huống mẫu</strong>
+      <span>Chọn một ngành gần với nhu cầu của bạn, sau đó thay lại thông tin cho phù hợp.</span>
       <div>
         {TEMPLATE_PRESETS.map((template) => (
           <button key={template.id} type="button" onClick={() => applyTemplate(template)}>
@@ -912,17 +911,17 @@ function OutputSection({ output, briefSummary, history, loadHistory, regenerate 
     <section className="output-zone">
       {!output ? (
         <div className="output-empty">
-          <strong>Chưa có nội dung được tạo</strong>
-          <span>Kết quả sẽ xuất hiện tại đây sau khi bạn hoàn tất brief và bấm nút sản xuất nội dung.</span>
+          <strong>Bản viết sẽ xuất hiện tại đây</strong>
+          <span>Hoàn tất các thông tin cần thiết rồi chọn nút tạo nội dung ở cuối biểu mẫu.</span>
         </div>
       ) : null}
-      <ResultBlock title="Kết quả" text={output} onRegenerate={regenerate} />
+      <ResultBlock title="Bản nội dung" text={output} onRegenerate={regenerate} />
       <details className="brief-debug">
-        <summary>Brief đang dùng</summary>
-        <pre>{briefSummary || "Chưa có brief."}</pre>
+        <summary>Tóm tắt dữ liệu đầu vào</summary>
+        <pre>{briefSummary || "Chưa có dữ liệu để tóm tắt."}</pre>
       </details>
       <details className="brief-debug">
-        <summary>Lịch sử local ({history.length})</summary>
+        <summary>Các bản đã tạo trên thiết bị ({history.length})</summary>
         <div className="history-list">
           {history.map((item) => (
             <button key={item.id} type="button" onClick={() => loadHistory(item)}>

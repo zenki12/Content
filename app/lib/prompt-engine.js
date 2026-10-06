@@ -1,38 +1,45 @@
 export const CHANNELS = [
   "Facebook",
-  "IG",
-  "Youtube",
+  "Instagram",
+  "YouTube",
   "TikTok",
-  "Reels",
-  "PR (báo chí)",
+  "Video ngắn",
+  "Báo chí",
   "Website / Blog",
   "Zalo / Zalo OA",
 ];
 
 export const GOALS = [
-  "Tăng nhận diện thương hiệu",
-  "Ra mắt sản phẩm mới",
-  "Educate thị trường",
-  "Tăng Traffic",
-  "Thu thập khách hàng tiềm năng",
-  "Xây dựng cộng đồng",
-  "Tăng tương tác",
-  "Tạo sự đồng cảm",
-  "Bán hàng trực tiếp",
-  "Tuyển dụng",
-  "Tuyên bố về giá trị / sứ mệnh",
-  "Viral",
-  "Viral – hài hước tốt đỡ",
-  "Viral – cảm động sâu sắc",
-  "Viral – phẫn nộ & bất công",
-  "Viral – hoài niệm",
-  "Viral – mẹo vặt cực hay",
-  "Viral – kỹ năng đỉnh cao & quá trình thỏa mãn",
-  "Viral – thí nghiệm gây sốc",
-  "Viral – sự thật ẩn giấu",
+  "Tăng mức độ ghi nhớ",
+  "Giới thiệu sản phẩm mới",
+  "Giúp thị trường hiểu vấn đề",
+  "Thu hút lượt truy cập",
+  "Tạo khách hàng tiềm năng",
+  "Nuôi dưỡng cộng đồng",
+  "Khuyến khích tương tác",
+  "Xây dựng sự tin tưởng",
+  "Thúc đẩy chuyển đổi",
+  "Thu hút ứng viên",
+  "Truyền tải giá trị thương hiệu",
+  "Mở rộng độ lan tỏa",
+  "Tạo tiếng cười",
+  "Khơi gợi cảm xúc",
+  "Nêu vấn đề cần thay đổi",
+  "Gợi lại ký ức",
+  "Chia sẻ mẹo hữu ích",
+  "Trình diễn kỹ năng hoặc quy trình",
+  "Thử nghiệm điều bất ngờ",
+  "Hé lộ điều ít người biết",
 ];
 
-export const FORMATS = ["Bài viết", "Caption", "Kịch bản video", "Ý tưởng", "Dàn ý", "Brief ảnh"];
+export const FORMATS = [
+  "Bài đăng dài",
+  "Nội dung ngắn",
+  "Kịch bản video",
+  "Bộ ý tưởng",
+  "Dàn ý triển khai",
+  "Nội dung cho thiết kế",
+];
 
 export const FORMULAS = [
   "AIDA",
@@ -58,117 +65,116 @@ export const FORMULAS = [
 ];
 
 export const CONTENT_STYLES = [
-  "Chuyên gia",
-  "Kỹ thuật",
-  "Phân tích",
+  "Chuyên môn dễ hiểu",
+  "Kỹ thuật chính xác",
+  "Phân tích có lập luận",
   "Học thuật",
-  "Pháp lý",
+  "Trang trọng",
   "Kể chuyện",
-  "Truyền cảm hứng",
-  "Đồng cảm",
-  "Miêu tả",
+  "Khích lệ hành động",
+  "Thấu hiểu",
+  "Giàu hình ảnh",
   "Hoài niệm",
-  "Thơ mộng",
-  "Nội tâm",
-  "Bán hàng trực tiếp",
-  "Bí ẩn / Gây tò mò",
-  "Đẳng cấp / Cao cấp",
-  "Cảnh báo / Gây sốc",
-  "Đánh giá",
-  "Phóng đại",
-  "Thân thiện / Trò chuyện",
+  "Giàu cảm xúc",
+  "Tự sự",
+  "Thuyết phục trực tiếp",
+  "Gợi tò mò",
+  "Tinh tế cao cấp",
+  "Cảnh báo",
+  "Đánh giá khách quan",
+  "Nhấn mạnh",
+  "Trò chuyện gần gũi",
   "Hài hước",
-  "Hướng dẫn",
-  "Báo chí / Tin tức",
-  "Bình luận",
-  "Trào phúng / Châm biếm",
-  "Gây tranh cãi",
-  "Giả dụ / Tưởng giá",
-  "Tương phản",
-  "Biểu tượng",
-  "Giải tưởng / Thần thoại",
-  "Vaporation",
-  "Giản dị / Tối giản",
+  "Hướng dẫn từng bước",
+  "Tin tức",
+  "Bình luận chuyên môn",
+  "Châm biếm nhẹ",
+  "Tranh luận",
+  "Giả định tình huống",
+  "Đối chiếu",
+  "Ẩn dụ",
+  "Tưởng tượng",
+  "Tối giản",
 ];
 
 export const CONTENT_LINES = [
-  "Hướng dẫn & How-to",
-  "Phá bỏ lầm tưởng",
-  "Đánh giá / Review",
-  "Checklist",
-  "Phỏng vấn",
-  "Behind the scenes",
-  "Đồng cảm",
-  "Mini case",
-  "How I did it",
-  "Thử nghiệm / chứng minh",
-  "PODs",
-  "USPs",
-  "Testimonial",
-  "Flash sale",
-  "Push sale",
-  "Up sale",
-  "Combo",
-  "Discount",
-  "Quà tặng kèm",
-  "UGC",
-  "Event online",
-  "Workshop",
-  "Webinar",
-  "Talkshow",
+  "Giải thích từng bước",
+  "Gỡ bỏ hiểu lầm",
+  "So sánh lựa chọn",
+  "Danh sách kiểm tra",
+  "Hỏi đáp chuyên gia",
+  "Hậu trường",
+  "Câu chuyện đồng cảm",
+  "Tình huống thực tế",
+  "Chia sẻ trải nghiệm",
+  "Thử nghiệm và kết quả",
+  "Điểm khác biệt",
+  "Lợi ích nổi bật",
+  "Phản hồi người dùng",
+  "Ưu đãi có thời hạn",
+  "Lời mời hành động",
+  "Gợi ý nâng cấp",
+  "Gói kết hợp",
+  "Ưu đãi theo mức",
+  "Quyền lợi đi kèm",
+  "Nội dung từ khách hàng",
+  "Sự kiện trực tuyến",
+  "Lớp thực hành",
+  "Buổi chia sẻ trực tuyến",
+  "Đối thoại chuyên đề",
 ];
 
 export const IMPROVE_TYPES = [
-  "AI tự động khám lỗi / cải thiện",
-  "Hàm súc hơn",
-  "Chi tiết hơn",
-  "Sáng tạo hơn",
-  "Logic hơn",
-  "Sửa chính tả",
-  "Đổi giọng văn",
-  "Đổi cấu trúc",
-  "Chuyển thành quy nạp",
-  "Chuyển thành song hành",
-  "Chuyển thành diễn dịch",
-  "Chuyển thành văn nói",
-  "Chuyển thành văn viết",
+  "Đánh giá tổng thể và chỉnh sửa",
+  "Rút gọn ý",
+  "Bổ sung chi tiết cần thiết",
+  "Làm mới cách diễn đạt",
+  "Sắp xếp lập luận",
+  "Sửa chính tả và ngữ pháp",
+  "Điều chỉnh giọng điệu",
+  "Tổ chức lại bố cục",
+  "Đi từ ví dụ đến kết luận",
+  "Triển khai các ý song song",
+  "Đi từ kết luận đến giải thích",
+  "Chuyển sang giọng trò chuyện",
+  "Chuyển sang giọng trang trọng",
 ];
 
 export const TEMPLATE_PRESETS = [
   {
     id: "cafe",
-    label: "Quán cà phê / F&B",
-    product: "Quán cà phê specialty mới mở, có không gian làm việc yên tĩnh, menu signature và góc chụp ảnh đẹp.",
-    audience: "Dân văn phòng 24-35 tuổi, thích làm việc ngoài văn phòng, cần nơi hẹn bạn hoặc gặp khách nhẹ nhàng.",
-    topic: "Giới thiệu quán cà phê mới mở ở trung tâm thành phố",
+    label: "Tiệm bánh / F&B",
+    product: "Tiệm bánh thủ công nhận giao bữa sáng theo tuần, dùng nguyên liệu theo mùa và công khai ngày làm bánh.",
+    audience: "Người đi làm bận rộn muốn có bữa sáng gọn nhẹ nhưng vẫn quan tâm thành phần và độ tươi.",
+    topic: "Giới thiệu gói bánh sáng giao định kỳ cho văn phòng",
   },
   {
     id: "skincare",
     label: "Mỹ phẩm / Skincare",
-    product: "Serum Vitamin C dành cho da xỉn màu, giá tầm trung, tập trung vào độ ổn định và cảm giác thấm nhanh.",
-    audience: "Nữ 22-32 tuổi, đã thử nhiều sản phẩm làm sáng da nhưng sợ kích ứng và sợ quảng cáo quá đà.",
-    topic: "Ra mắt serum Vitamin C cho người mới bắt đầu skincare",
+    product: "Kem chống nắng dùng hằng ngày, kết cấu nhẹ, không nâng tông và phù hợp với người thường xuyên làm việc ngoài trời.",
+    audience: "Người trẻ muốn duy trì thói quen chống nắng nhưng ngại cảm giác bí da và lớp nền bị vón.",
+    topic: "Hướng dẫn chọn kem chống nắng dễ dùng mỗi ngày",
   },
   {
     id: "fashion",
     label: "Thời trang",
-    product: "Thương hiệu thời trang công sở tối giản, chất liệu thoáng, phom dễ mặc cho nữ văn phòng.",
-    audience: "Phụ nữ 25-35 tuổi cần outfit đi làm lịch sự nhưng không bị già.",
-    topic: "Gợi ý outfit đi làm mùa hè",
+    product: "Bộ sưu tập tủ đồ tối giản gồm các món có thể phối chéo, chất liệu dễ chăm sóc và phom phù hợp nhiều hoàn cảnh.",
+    audience: "Nhân viên văn phòng muốn mặc chỉn chu mà không mất nhiều thời gian chọn đồ mỗi sáng.",
+    topic: "Xây dựng tủ đồ đi làm gọn nhẹ với tám món cơ bản",
   },
   {
     id: "real-estate",
     label: "Bất động sản",
-    product: "Dự án căn hộ trung cấp gần tuyến metro, thanh toán theo tiến độ, pháp lý minh bạch.",
-    audience: "Gia đình trẻ muốn mua căn hộ đầu tiên, sợ rủi ro pháp lý và áp lực tài chính.",
-    topic: "Nội dung tư vấn mua căn hộ đầu tiên",
+    product: "Dịch vụ quản lý căn hộ cho thuê, phụ trách tìm khách, bàn giao, thu tiền và báo cáo vận hành hằng tháng.",
+    audience: "Chủ căn hộ ở xa hoặc không có thời gian trực tiếp xử lý việc cho thuê.",
+    topic: "Những đầu việc chủ nhà có thể giao cho đơn vị quản lý cho thuê",
   },
   {
     id: "course",
-    label: "Khoá học online",
-    product: "Khoá học online 6 tuần giúp chủ shop tự chạy quảng cáo cơ bản, có template và buổi sửa bài.",
-    audience: "Chủ shop nhỏ từng chạy ads không hiệu quả, muốn tự kiểm soát ngân sách.",
-    topic: "Kéo lead cho khoá học quảng cáo online",
+    label: "Lớp học trực tuyến",
+    product: "Lớp phân tích dữ liệu thực hành trong bốn tuần, học trên bộ dữ liệu thật và có phiên góp ý bài tập trực tiếp.",
+    audience: "Người làm vận hành muốn đọc số liệu tốt hơn nhưng chưa có nền tảng phân tích chuyên sâu.",
+    topic: "Mời đăng ký lớp phân tích dữ liệu dành cho người mới",
   },
 ];
 
@@ -176,16 +182,16 @@ export function createEmptyBrief() {
   return {
     product: "",
     topic: "",
-    feeling: "🥰 Chia sẻ, đồng cảm",
+    feeling: "🥰 Chân thành, thấu hiểu",
     channel: "Facebook",
     channels: ["Facebook"],
     extra: "",
     variantCount: "1",
     audience: "",
-    hasHook: "Chưa (Để AI ngẫu nhiên)",
-    goals: ["Bán hàng trực tiếp"],
-    formats: ["Bài viết"],
-    contentShape: "Text trơn",
+    hasHook: "Để hệ thống đề xuất",
+    goals: ["Thúc đẩy chuyển đổi"],
+    formats: ["Bài đăng dài"],
+    contentShape: "Văn bản",
     lengthType: "Số từ",
     lengthValue: "400",
     contentLines: [],
@@ -193,17 +199,18 @@ export function createEmptyBrief() {
     subMessage: "",
     formula: "AIDA",
     style: "Kể chuyện",
-    cta: "Mua ngay",
+    cta: "Tìm hiểu sản phẩm",
     evidence: "",
     vocabRatio: "50% Định tính – 50% Định lượng",
     vocabRatioValue: 50,
     qualityRatioValue: 50,
     sourceContent: "",
-    improveTypes: ["AI tự động khám lỗi / cải thiện"],
+    improveTypes: ["Đánh giá tổng thể và chỉnh sửa"],
     styleSample: "",
     styleTopic: "",
     styleExtra: "",
-    ideaCount: "5 ý tưởng",
+    ideaCount: "5 hướng",
+    advancedMode: "Hệ thống đề xuất",
   };
 }
 
@@ -219,17 +226,17 @@ function field(label, value) {
 
 export function summarizeBrief(brief) {
   return [
-    field("Sản phẩm / Dịch vụ", brief.product),
-    field("Chủ đề", brief.topic),
-    field("Khách hàng mục tiêu", brief.audience),
-    field("Kênh triển khai", brief.channels?.length ? brief.channels : brief.channel),
-    field("Mục tiêu", brief.goals),
-    field("Đầu ra", brief.formats),
-    field("Phong cách", brief.style || brief.feeling),
-    field("Thông điệp chính", brief.mainMessage),
-    field("Thông điệp phụ", brief.subMessage),
-    field("Bằng chứng", brief.evidence),
-    field("Yêu cầu thêm", brief.extra),
+    field("Sản phẩm hoặc vấn đề", brief.product),
+    field("Nội dung cần triển khai", brief.topic),
+    field("Người đọc hướng đến", brief.audience),
+    field("Kênh sử dụng", brief.channels?.length ? brief.channels : brief.channel),
+    field("Kết quả mong muốn", brief.goals),
+    field("Loại bản thảo", brief.formats),
+    field("Giọng thể hiện", brief.style || brief.feeling),
+    field("Ý chính cần ghi nhớ", brief.mainMessage),
+    field("Ý bổ trợ", brief.subMessage),
+    field("Dữ kiện kiểm chứng", brief.evidence),
+    field("Yêu cầu riêng", brief.extra),
   ]
     .filter(Boolean)
     .join("\n");
@@ -249,95 +256,95 @@ export function compileWritePrompt({ mode, brief }) {
 
   return {
     system:
-      "Bạn là senior content strategist và direct-response copywriter cho thị trường Việt Nam. Viết tự nhiên, có insight, không bịa số liệu, không thêm claim y tế/tài chính/pháp lý nếu brief không cung cấp.",
-    user: `Nhiệm vụ: sản xuất ${count} phiên bản nội dung theo brief.
+      "Bạn là biên tập viên nội dung tiếng Việt giàu kinh nghiệm. Hãy viết rõ ý, tự nhiên, phù hợp ngữ cảnh sử dụng; không bịa số liệu và không tự thêm cam kết về y tế, tài chính hoặc pháp lý.",
+    user: `Hãy tạo ${count} bản nội dung từ dữ liệu đầu vào dưới đây.
 
-Chế độ: ${mode}
-${advanced ? "Yêu cầu nâng cao: dùng tuyến nội dung, công thức, văn phong, CTA, tỉ lệ định tính/định lượng và bằng chứng nếu được cung cấp." : "Yêu cầu cơ bản: viết rõ, dễ hiểu, đúng kênh và có CTA."}
+Mức biên tập: ${mode}
+${advanced ? "Yêu cầu chuyên sâu: vận dụng góc triển khai, khung thuyết phục, giọng thể hiện, hành động mong muốn và dữ kiện được cung cấp." : "Yêu cầu biên soạn: ưu tiên mạch lạc, đúng người đọc, đúng kênh và có kết thúc phù hợp."}
 
-Brief:
+Dữ liệu đầu vào:
 ${summarizeBrief(brief)}
-${field("Công thức nội dung", brief.formula)}
-${field("Tuyến nội dung", brief.contentLines)}
+${field("Khung thuyết phục", brief.formula)}
+${field("Góc triển khai", brief.contentLines)}
 ${vocabNote}
 ${qualityNote}
 
-Quy tắc:
-- Hook phải nằm ở 1-2 dòng đầu.
-- Không giải thích quá trình viết.
-- Nếu có nhiều phiên bản, đánh số rõ.
-- Nếu thiếu dữ liệu, tự giả định ở mức an toàn và không bịa bằng chứng.`,
+Tiêu chuẩn đầu ra:
+- Hai dòng đầu phải tạo được lý do để đọc tiếp.
+- Chỉ trả về nội dung hoàn chỉnh, không kể lại quá trình thực hiện.
+- Nếu có nhiều bản, phân tách và đánh số rõ ràng.
+- Khi dữ liệu chưa đủ, chỉ dùng giả định trung tính và tuyệt đối không tạo bằng chứng mới.`,
   };
 }
 
 export function compileImprovePrompt({ mode, brief }) {
   return {
     system:
-      "Bạn là editor tiếng Việt, content strategist và copywriter. Nhiệm vụ là cải thiện nội dung có sẵn mà vẫn giữ mục đích ban đầu.",
-    user: `Cải thiện nội dung dưới đây.
+      "Bạn là biên tập viên tiếng Việt. Hãy cải thiện bản viết nhưng giữ nguyên sự thật, chủ đích và thông tin cốt lõi của tác giả.",
+    user: `Biên tập lại nội dung dưới đây.
 
-Chế độ: ${mode}
-Kiểu cải thiện: ${asList(brief.improveTypes)}
-Yêu cầu thêm: ${brief.extra || "Không có"}
+Mức biên tập: ${mode}
+Điểm cần xử lý: ${asList(brief.improveTypes)}
+Yêu cầu riêng: ${brief.extra || "Không có"}
 
-Nội dung gốc:
+Bản viết ban đầu:
 ${brief.sourceContent}
 
-Output:
-- Nếu có lỗi lớn, nêu ngắn gọn 3-5 nhận xét.
-- Viết lại phiên bản tốt hơn.
-- Giữ nguyên facts, không bịa số liệu hoặc claim mới.`,
+Kết quả cần trả về:
+- Nêu tối đa 5 vấn đề quan trọng nếu bản gốc thực sự cần sửa.
+- Cung cấp một bản đã biên tập hoàn chỉnh.
+- Giữ nguyên dữ kiện; không thêm số liệu hoặc cam kết mới.`,
   };
 }
 
 export function compileStyleTransferPrompt({ mode, brief }) {
   return {
     system:
-      "Bạn là chuyên gia phân tích văn phong và viết lại theo DNA giọng văn. Học cấu trúc, nhịp câu, từ vựng, mức độ cảm xúc, nhưng không sao chép nguyên văn.",
-    user: `Học văn phong từ mẫu và viết bài mới.
+      "Bạn là biên tập viên có khả năng nhận diện phong cách viết. Hãy học cấu trúc, nhịp câu, cách dùng từ và sắc thái của mẫu nhưng không sao chép câu chữ.",
+    user: `Phân tích mẫu tham chiếu rồi viết một nội dung mới.
 
-Chế độ: ${mode}
+Mức biên tập: ${mode}
 
-Văn bản mẫu để học DNA:
+Mẫu tham chiếu:
 ${brief.styleSample}
 
-Chủ đề cần triển khai theo văn phong đó:
+Nội dung mới cần triển khai:
 ${brief.styleTopic}
 
-Yêu cầu khác:
+Yêu cầu riêng:
 ${brief.styleExtra || "Không có"}
 
-Output:
-- Tóm tắt DNA văn phong trong 4-6 bullet.
-- Viết bài mới theo DNA đó.
-- Không copy câu nguyên văn từ mẫu nếu không cần thiết.`,
+Kết quả cần trả về:
+- Tóm tắt đặc điểm phong cách trong 4-6 ý ngắn.
+- Viết bản mới thể hiện các đặc điểm đó.
+- Không lặp lại nguyên văn câu trong mẫu trừ tên riêng hoặc trích dẫn bắt buộc.`,
   };
 }
 
 export function compileIdeasPrompt({ mode, brief }) {
   return {
     system:
-      "Bạn là creative strategist chuyên tìm hook, angle và ý tưởng nội dung cho thị trường Việt Nam.",
-    user: `Gợi ý hook / ý tưởng nội dung.
+      "Bạn là người hoạch định nội dung, có nhiệm vụ tìm các hướng tiếp cận khác nhau, thực tế và phù hợp với người đọc Việt Nam.",
+    user: `Đề xuất các hướng triển khai nội dung.
 
-Chế độ: ${mode}
-Số lượng: ${brief.ideaCount}
+Mức biên tập: ${mode}
+Số hướng cần có: ${brief.ideaCount}
 
-Sản phẩm / Dịch vụ:
+Sản phẩm hoặc vấn đề:
 ${brief.product}
 
-Khách hàng mục tiêu / khán giả mục tiêu:
+Người đọc hướng đến:
 ${brief.audience}
 
-Mục tiêu kinh doanh / marketing:
+Kết quả mong muốn:
 ${asList(brief.goals)}
 
-Output mỗi ý tưởng:
-- Hook
-- Angle
-- Vì sao có thể hiệu quả
-- Gợi ý format triển khai
-- CTA phù hợp`,
+Mỗi hướng cần có:
+- Câu mở đầu gợi ý
+- Góc tiếp cận
+- Lý do phù hợp với người đọc
+- Cách triển khai đề xuất
+- Hành động mong muốn`,
   };
 }
 

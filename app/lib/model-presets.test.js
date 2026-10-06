@@ -2,10 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { MODEL_PRESETS, applyModelPreset } from "./model-presets.js";
 
-test("model presets clearly label payment expectations", () => {
+test("model presets clearly describe usage cost", () => {
   assert.ok(MODEL_PRESETS.length >= 4);
   for (const preset of MODEL_PRESETS) {
-    assert.match(preset.costLabel, /Trả phí|Free tier|Local|Có model free/);
+    assert.match(preset.costLabel, /phí|Chi phí|hạn mức/i);
     assert.ok(preset.model);
   }
 });

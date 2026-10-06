@@ -71,12 +71,12 @@ pre {
   word-break: break-word;
 }
 
-.oneprompt-page {
+.sua-bai-page {
   min-height: 100vh;
   padding: 34px 18px;
 }
 
-.oneprompt-card {
+.sua-bai-workspace {
   background: var(--card);
   border: 1px solid rgba(235, 221, 252, 0.92);
   border-radius: 30px;
@@ -87,7 +87,7 @@ pre {
   padding: 42px 48px 54px;
 }
 
-:root[data-theme="dark"] .oneprompt-card {
+:root[data-theme="dark"] .sua-bai-workspace {
   background: rgba(18, 14, 35, 0.95);
   border-color: rgba(80, 60, 130, 0.4);
   box-shadow: 0 26px 80px rgba(20, 10, 60, 0.6);
@@ -1105,11 +1105,11 @@ textarea:focus {
 }
 
 @media (max-width: 980px) {
-  .oneprompt-page {
+  .sua-bai-page {
     padding: 12px;
   }
 
-  .oneprompt-card {
+  .sua-bai-workspace {
     border-radius: 22px;
     padding: 24px 18px 34px;
   }

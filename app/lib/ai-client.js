@@ -26,7 +26,7 @@ export async function generateText({ settings, messages }) {
   const baseUrl = settings?.baseUrl?.trim();
 
   if (!apiKey) {
-    throw new Error("Thiếu API key.");
+    throw new Error("Bạn chưa nhập khóa API.");
   }
 
   if (baseUrl) {
@@ -53,7 +53,7 @@ async function generateWithOpenAIResponses({ apiKey, model, messages }) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(
-      data?.error?.message || `OpenAI API lỗi ${response.status}.`
+      data?.error?.message || `OpenAI API phản hồi lỗi ${response.status}.`
     );
   }
 
@@ -85,7 +85,7 @@ async function generateWithChatCompletions({ apiKey, model, baseUrl, messages })
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data?.error?.message || `AI API lỗi ${response.status}.`);
+    throw new Error(data?.error?.message || `Dịch vụ AI phản hồi lỗi ${response.status}.`);
   }
 
   return data?.choices?.[0]?.message?.content?.trim() || "";

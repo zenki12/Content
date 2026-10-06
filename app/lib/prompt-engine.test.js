@@ -15,13 +15,13 @@ test("summarizeBrief includes core marketing context", () => {
     ...createEmptyBrief(),
     product: "Khoá IELTS 60 ngày",
     audience: "Người đi làm kẹt ở band 5.5",
-    goals: ["Thu thập khách hàng tiềm năng"],
+    goals: ["Tạo khách hàng tiềm năng"],
     evidence: "Cam kết học lại miễn phí",
   });
 
   assert.match(summary, /Khoá IELTS 60 ngày/);
   assert.match(summary, /kẹt ở band 5\.5/);
-  assert.match(summary, /Thu thập khách hàng tiềm năng/);
+  assert.match(summary, /Tạo khách hàng tiềm năng/);
   assert.match(summary, /học lại miễn phí/);
 });
 
@@ -32,13 +32,13 @@ test("compileWritePrompt adapts to advanced mode fields", () => {
       ...createEmptyBrief(),
       product: "Serum Vitamin C",
       formula: "AIDA",
-      contentLines: ["Insight trigger", "USPs"],
+      contentLines: ["Tình huống thực tế", "Điểm khác biệt"],
       vocabRatio: "50% Định tính - 50% Định lượng",
     },
   });
 
-  assert.match(prompt.system, /direct-response copywriter/);
-  assert.match(prompt.user, /Chế độ: advanced/);
+  assert.match(prompt.system, /biên tập viên nội dung tiếng Việt/);
+  assert.match(prompt.user, /Mức biên tập: advanced/);
   assert.match(prompt.user, /AIDA/);
   assert.match(prompt.user, /50% Định tính/);
 });
@@ -49,13 +49,13 @@ test("compileImprovePrompt focuses on rewriting existing content", () => {
     brief: {
       ...createEmptyBrief(),
       sourceContent: "Bài viết cũ cần sửa",
-      improveTypes: ["Hàm súc hơn", "Logic hơn"],
+      improveTypes: ["Rút gọn ý", "Sắp xếp lập luận"],
     },
   });
 
   assert.match(prompt.user, /Bài viết cũ cần sửa/);
-  assert.match(prompt.user, /Hàm súc hơn, Logic hơn/);
-  assert.match(prompt.user, /Viết lại phiên bản tốt hơn/);
+  assert.match(prompt.user, /Rút gọn ý, Sắp xếp lập luận/);
+  assert.match(prompt.user, /bản đã biên tập hoàn chỉnh/);
 });
 
 test("compileStyleTransferPrompt learns voice before writing new content", () => {
@@ -70,7 +70,7 @@ test("compileStyleTransferPrompt learns voice before writing new content", () =>
 
   assert.match(prompt.user, /mẫu văn phong cần học/);
   assert.match(prompt.user, /Viết bài mới về khoá học marketing/);
-  assert.match(prompt.user, /Tóm tắt DNA văn phong/);
+  assert.match(prompt.user, /Tóm tắt đặc điểm phong cách/);
 });
 
 test("compilePromptByWorkflow routes ideas workflow", () => {
@@ -81,22 +81,22 @@ test("compilePromptByWorkflow routes ideas workflow", () => {
     brief: {
       ...createEmptyBrief(),
       product: "Kem chống nắng",
-      ideaCount: "5 ý tưởng",
+      ideaCount: "5 hướng",
     },
   });
 
-  assert.match(prompt.user, /Gợi ý hook \/ ý tưởng/);
+  assert.match(prompt.user, /Đề xuất các hướng triển khai nội dung/);
   assert.match(prompt.user, /Kem chống nắng/);
-  assert.match(prompt.user, /5 ý tưởng/);
+  assert.match(prompt.user, /5 hướng/);
 });
 
-test("compileIdeasPrompt includes hook and angle output requirements", () => {
+test("compileIdeasPrompt includes opening and approach requirements", () => {
   const prompt = compileIdeasPrompt({
     mode: "basic",
     brief: { ...createEmptyBrief(), product: "App học tiếng Anh" },
   });
 
-  assert.match(prompt.user, /Hook/);
-  assert.match(prompt.user, /Angle/);
-  assert.match(prompt.user, /CTA phù hợp/);
+  assert.match(prompt.user, /Câu mở đầu gợi ý/);
+  assert.match(prompt.user, /Góc tiếp cận/);
+  assert.match(prompt.user, /Hành động mong muốn/);
 });

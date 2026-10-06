@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ text });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Không generate được nội dung.";
+      error instanceof Error ? error.message : "Chưa thể tạo bản viết. Vui lòng thử lại.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
