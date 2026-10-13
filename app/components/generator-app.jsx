@@ -28,9 +28,9 @@ const DEFAULT_SETTINGS = {
 };
 
 const MODES = [
-  { id: "entry", icon: "⚡", label: "Tạo nhanh", desc: "Ít bước, có bản nháp ngay" },
-  { id: "basic", icon: "🔥", label: "Biên soạn", desc: "Điều khiển các yếu tố chính" },
-  { id: "advanced", icon: "🔮", label: "Chuyên sâu", desc: "Thiết kế nội dung có chủ đích" },
+  { id: "entry", icon: "⚡", label: "Nháp nhanh", desc: "Một yêu cầu, một bản đầu tiên" },
+  { id: "basic", icon: "🔥", label: "Dựng bài", desc: "Xây brief theo bốn chặng" },
+  { id: "advanced", icon: "🔮", label: "Chỉ đạo", desc: "Kiểm soát lập luận và giọng" },
 ];
 
 const WORKFLOWS = [
@@ -61,18 +61,12 @@ const QUICK_FEELINGS = [
   "🔥 Khẩn trương, thôi thúc",
 ];
 
-const BRAND_PURPOSES = [
-  "📢 Giới thiệu giải pháp",
-  "📚 Nuôi dưỡng cộng đồng",
-  "🌟 Tạo dấu ấn cá nhân",
-];
-
 const IDEA_COUNTS = ["3 hướng", "5 hướng", "7 hướng", "10 hướng"];
 
 const TUTORIAL_STEPS = [
   {
     title: "Chọn cách bạn muốn bắt đầu",
-    body: "Tạo nhanh dành cho một yêu cầu gọn. Biên soạn giúp kiểm soát các yếu tố chính. Chuyên sâu phù hợp với nội dung cần định hướng chiến lược.",
+    body: "Nháp nhanh nhận một yêu cầu gọn. Dựng bài dẫn bạn qua bốn chặng. Chỉ đạo cho phép kiểm soát lập luận và cách thể hiện.",
   },
   {
     title: "Cung cấp đúng dữ liệu đầu vào",
@@ -125,6 +119,22 @@ function FieldLabel({ children, required, optional, hint }) {
         </button>
       ) : null}
     </div>
+  );
+}
+
+function BriefBlock({ step, eyebrow, title, description, tone = "", children }) {
+  return (
+    <section className={`brief-block ${tone ? `brief-block-${tone}` : ""}`}>
+      <header className="brief-block-head">
+        <span className="brief-step" aria-hidden="true">{step}</span>
+        <div>
+          <span className="brief-eyebrow">{eyebrow}</span>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </div>
+      </header>
+      <div className="brief-block-body">{children}</div>
+    </section>
   );
 }
 
@@ -291,7 +301,7 @@ function Notice({ tone = "purple", children, action = false, onGuide }) {
     return (
       <div className={`notice ${tone} notice-with-action`}>
         <span>
-          Chưa có đủ thông tin? Nhập <b className="highlight-keyword">&quot;để hệ thống đề xuất&quot;</b> tại trường tương ứng.
+          Trường không bắt buộc có thể để trống. Sửa Bài sẽ hoàn thiện trong phạm vi dữ kiện bạn cung cấp.
         </span>
         <button className="guide-btn" type="button" onClick={onGuide}>
           Cách sử dụng
@@ -402,6 +412,7 @@ export default function GeneratorApp() {
     if (workflow === "write") {
       if (mode === "entry" && !brief.topic.trim()) return "Hãy cho biết chủ đề bạn muốn triển khai.";
       if (mode !== "entry" && !brief.product.trim()) return "Hãy mô tả sản phẩm, dịch vụ hoặc vấn đề cần truyền đạt.";
+      if (mode !== "entry" && !brief.topic.trim()) return "Hãy chốt một ý trung tâm cho bản viết.";
     }
     if (workflow === "improve" && improveSubmode === "improve" && !brief.sourceContent.trim()) {
       return "Hãy dán bản nội dung bạn muốn chỉnh sửa.";
@@ -610,50 +621,64 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
     return (
       <section className="form-section">
         <Notice tone="blue">
-          ⚡ <strong>Tạo nhanh</strong>
+          <strong>Bản nháp một lượt</strong>
           <br />
-          Đi thẳng từ ý định đến bản nháp đầu tiên.
+          Gửi một yêu cầu gọn và nhận bản đầu tiên để tiếp tục biên tập.
         </Notice>
-        <p className="center-note">Cung cấp bối cảnh ngắn, chủ đề, sắc thái và nơi đăng. Phần còn lại sẽ được hệ thống đề xuất.</p>
         <Notice action onGuide={onGuide} />
         <TemplateStrip applyTemplate={applyTemplate} />
-        <TextArea
-          label="Bạn đang muốn giới thiệu điều gì, cho ai?"
-          optional
-          rows={4}
-          value={brief.product}
-          placeholder="Ví dụ: Dịch vụ giao rau sạch theo tuần dành cho gia đình trẻ bận rộn tại TP.HCM..."
-          onChange={(product) => patchBrief({ product })}
-        />
-        <TextInput
-          label="Trọng tâm của bản viết là gì?"
-          required
-          value={brief.topic}
-          placeholder="Ví dụ: Vì sao đặt rau theo tuần giúp gia đình tiết kiệm thời gian và hạn chế lãng phí"
-          onChange={(topic) => patchBrief({ topic })}
-        />
-        <PillGroup
-          label="Người đọc nên cảm nhận điều gì?"
-          required
-          options={QUICK_FEELINGS}
-          value={brief.feeling}
-          onChange={(feeling) => patchBrief({ feeling })}
-        />
-        <PillGroup
-          label="Nội dung sẽ xuất hiện ở đâu?"
-          required
-          options={["Facebook", "TikTok (kịch bản video ngắn)", "Instagram", "Website/Blog"]}
-          value={brief.channel}
-          onChange={(channel) => patchBrief({ channel, channels: [channel] })}
-        />
-        <ExtraPromptField mode={mode} brief={brief} patchBrief={patchBrief} />
-        <PillGroup
-          label="Số phương án cần nhận"
-          maxItems="Bạn có thể tạo tối đa 10 phương án"
-          options={["1", "2", "3", "5", "10"]}
-          value={brief.variantCount}
-          onChange={(variantCount) => patchBrief({ variantCount })}
-        />
+        <BriefBlock
+          step="01"
+          eyebrow="YÊU CẦU"
+          title="Nói ngắn gọn điều bạn cần"
+          description="Không cần viết thành brief. Chỉ cần nêu đúng việc và thông tin bắt buộc."
+        >
+          <TextArea
+            label="Bạn muốn có một bản viết về điều gì?"
+            required
+            rows={4}
+            value={brief.topic}
+            placeholder="Ví dụ: Viết bài giới thiệu gói giao rau theo tuần, nhấn vào việc tiết kiệm thời gian cho gia đình trẻ..."
+            onChange={(topic) => patchBrief({ topic })}
+          />
+          <TextArea
+            label="Dữ kiện cần giữ đúng"
+            optional
+            rows={3}
+            value={brief.product}
+            placeholder="Tên sản phẩm, mức giá, ưu đãi, khu vực phục vụ hoặc thông tin không được tự suy diễn..."
+            onChange={(product) => patchBrief({ product })}
+          />
+        </BriefBlock>
+        <BriefBlock
+          step="02"
+          eyebrow="CÁCH DÙNG"
+          title="Chọn ngữ cảnh cho bản nháp"
+          description="Hai lựa chọn này giúp hệ thống điều chỉnh nhịp câu và độ dài."
+        >
+          <PillGroup
+            label="Cảm giác khi đọc"
+            required
+            options={QUICK_FEELINGS}
+            value={brief.feeling}
+            onChange={(feeling) => patchBrief({ feeling })}
+          />
+          <PillGroup
+            label="Nơi bạn sẽ dùng bản viết"
+            required
+            options={CHANNELS}
+            value={brief.channel}
+            onChange={(channel) => patchBrief({ channel, channels: [channel] })}
+          />
+          <ExtraPromptField mode={mode} brief={brief} patchBrief={patchBrief} />
+          <PillGroup
+            label="Số bản để lựa chọn"
+            maxItems="Tối đa 10 bản trong một lần tạo"
+            options={["1", "2", "3", "5", "10"]}
+            value={brief.variantCount}
+            onChange={(variantCount) => patchBrief({ variantCount })}
+          />
+        </BriefBlock>
       </section>
     );
   }
@@ -664,9 +689,9 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
         <Notice action onGuide={onGuide} />
         <div className="mode-intro mode-intro-advanced">
           <div>
-            <div className="section-chip purple">CHUYÊN SÂU</div>
-            <h2>Thiết kế logic truyền đạt trước khi viết</h2>
-            <p>Xác lập góc tiếp cận, thông điệp, cấu trúc thuyết phục, giọng điệu và hành động mong muốn.</p>
+            <div className="section-chip purple">CHỈ ĐẠO</div>
+            <h2>Dựng đường đi của ý tưởng trước khi viết</h2>
+            <p>Kiểm soát kết luận, nhịp lập luận, chất giọng và cơ sở thuyết phục của bản nội dung.</p>
           </div>
         </div>
         <AdvancedWriteFields brief={brief} patchBrief={patchBrief} />
@@ -680,9 +705,9 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
       <Notice action onGuide={onGuide} />
       <div className="mode-intro">
         <div>
-          <div className="section-chip">BIÊN SOẠN</div>
-          <h2>Xây bản viết từ những dữ liệu quan trọng</h2>
-          <p>Mô tả điều cần truyền đạt, người cần thuyết phục, mục tiêu sử dụng và hình thức đầu ra.</p>
+          <div className="section-chip">DỰNG BÀI</div>
+          <h2>Đi từ nguyên liệu thô đến một yêu cầu rõ ràng</h2>
+          <p>Hoàn thiện lần lượt dữ kiện, ý định, thành phẩm và các giới hạn cần giữ.</p>
         </div>
       </div>
       <BasicBriefFields mode={mode} brief={brief} patchBrief={patchBrief} />
@@ -693,53 +718,84 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
 function BasicBriefFields({ mode, brief, patchBrief }) {
   return (
     <>
-      <PillGroup
-        label="Vai trò của nội dung này"
-        required
-        options={BRAND_PURPOSES}
-        value={brief.goals?.[0] || BRAND_PURPOSES[0]}
-        onChange={(goal) => patchBrief({ goals: [goal] })}
-      />
-      <TextArea
-        label="Thông tin nền cần đưa vào bản viết"
-        required
-        rows={4}
-        value={brief.product}
-        placeholder="Mô tả giải pháp, điểm khác biệt, mức giá, ưu đãi và điều người đọc cần hiểu..."
-        onChange={(product) => patchBrief({ product })}
+      <BriefBlock
+        step="01"
+        eyebrow="NGUYÊN LIỆU"
+        title="Cho hệ thống đủ chất liệu để viết"
+        description="Ghi lại điều phải đúng và người sẽ đọc nội dung này."
       >
-        <p className="field-hint">Thông tin càng cụ thể, bản viết càng ít chung chung.</p>
-      </TextArea>
-      <PillGroup
-        label="Bạn đã có câu mở đầu hoặc góc tiếp cận chưa?"
-        options={["Tôi đã có hướng", "Để hệ thống đề xuất"]}
-        value={brief.hasHook}
-        onChange={(hasHook) => patchBrief({ hasHook })}
-      />
-      <PillGroup label="Nơi nội dung được sử dụng" required multi options={CHANNELS} value={brief.channels} onChange={(channels) => patchBrief({ channels })} />
-      <TextArea
-        label="Người đọc bạn muốn tác động"
-        required
-        hint
-        rows={4}
-        value={brief.audience}
-        placeholder="Ví dụ: Quản lý nhóm 28-40 tuổi, thường thiếu thời gian tổng hợp báo cáo và ngại thay đổi công cụ..."
-        onChange={(audience) => patchBrief({ audience })}
+        <TextArea
+          label="Thông tin không được viết sai"
+          required
+          rows={4}
+          value={brief.product}
+          placeholder="Sản phẩm, dịch vụ, sự kiện hoặc vấn đề; điểm khác biệt, mức giá, dữ kiện và giới hạn cần giữ đúng..."
+          onChange={(product) => patchBrief({ product })}
+        >
+          <p className="field-hint">Ưu tiên dữ kiện thật. Hệ thống sẽ không tự tạo bằng chứng còn thiếu.</p>
+        </TextArea>
+        <TextArea
+          label="Người sẽ đọc bản này"
+          required
+          rows={3}
+          value={brief.audience}
+          placeholder="Họ là ai, đang ở hoàn cảnh nào, đã biết gì và còn do dự điều gì?"
+          onChange={(audience) => patchBrief({ audience })}
+        />
+      </BriefBlock>
+
+      <BriefBlock
+        step="02"
+        eyebrow="Ý ĐỊNH"
+        title="Chốt điều bài viết cần làm"
+        description="Một trọng tâm rõ sẽ giúp bản viết bớt chung chung và không ôm quá nhiều ý."
       >
-        <p className="field-hint">Nêu hoàn cảnh, nhu cầu, rào cản và điều khiến họ cân nhắc hành động.</p>
-      </TextArea>
-      <PillGroup label="Kết quả truyền thông mong muốn" required multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
-      <PillGroup label="Loại bản thảo cần tạo" required multi options={FORMATS} value={brief.formats} onChange={(formats) => patchBrief({ formats })} />
-      <PillGroup label="Cách trình bày" options={["Văn bản", "Bảng thông tin"]} value={brief.contentShape} onChange={(contentShape) => patchBrief({ contentShape })} />
-      <PillGroup label="Đơn vị đo độ dài" options={["Số từ", "Thời lượng", "Số đoạn"]} value={brief.lengthType} onChange={(lengthType) => patchBrief({ lengthType })} />
-      <ExtraPromptField mode={mode} brief={brief} patchBrief={patchBrief} />
-      <PillGroup
-        label="Số phương án cần nhận"
-        maxItems="Bạn có thể tạo tối đa 10 phương án"
-        options={["1", "2", "3", "5", "10"]}
-        value={brief.variantCount}
-        onChange={(variantCount) => patchBrief({ variantCount })}
-      />
+        <TextArea
+          label="Ý trung tâm cần truyền đạt"
+          required
+          rows={3}
+          value={brief.topic}
+          placeholder="Ví dụ: Giúp quản lý nhận ra báo cáo thủ công đang lấy mất thời gian ra quyết định..."
+          onChange={(topic) => patchBrief({ topic })}
+        />
+        <PillGroup label="Sau khi đọc, điều gì nên thay đổi?" required multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
+        <PillGroup label="Bản viết sẽ được dùng trong ngữ cảnh nào?" required multi options={CHANNELS} value={brief.channels} onChange={(channels) => patchBrief({ channels })} />
+      </BriefBlock>
+
+      <BriefBlock
+        step="03"
+        eyebrow="THÀNH PHẨM"
+        title="Mô tả thứ bạn muốn nhận lại"
+        description="Chọn dạng đầu ra và quy mô phù hợp với nơi sử dụng."
+      >
+        <PillGroup label="Dạng nội dung" required multi options={FORMATS} value={brief.formats} onChange={(formats) => patchBrief({ formats })} />
+        <div className="brief-inline-grid">
+          <PillGroup label="Cấu trúc hiển thị" options={["Theo đoạn", "Theo bảng"]} value={brief.contentShape} onChange={(contentShape) => patchBrief({ contentShape })} />
+          <PillGroup label="Đo độ dài bằng" options={["Số từ", "Thời lượng", "Số đoạn"]} value={brief.lengthType} onChange={(lengthType) => patchBrief({ lengthType })} />
+        </div>
+        <TextInput
+          label={`Độ dài dự kiến (${(brief.lengthType || "Số từ").toLowerCase()})`}
+          value={brief.lengthValue}
+          placeholder={brief.lengthType === "Thời lượng" ? "Ví dụ: 60 giây" : brief.lengthType === "Số đoạn" ? "Ví dụ: 6 đoạn" : "Ví dụ: 400 từ"}
+          onChange={(lengthValue) => patchBrief({ lengthValue })}
+        />
+      </BriefBlock>
+
+      <BriefBlock
+        step="04"
+        eyebrow="RÀNG BUỘC"
+        title="Đặt giới hạn cho quá trình biên tập"
+        description="Nêu điều nên giữ, điều phải tránh và số bản cần so sánh."
+      >
+        <ExtraPromptField mode={mode} brief={brief} patchBrief={patchBrief} />
+        <PillGroup
+          label="Số bản để lựa chọn"
+          maxItems="Tối đa 10 bản trong một lần tạo"
+          options={["1", "2", "3", "5", "10"]}
+          value={brief.variantCount}
+          onChange={(variantCount) => patchBrief({ variantCount })}
+        />
+      </BriefBlock>
     </>
   );
 }
@@ -768,41 +824,57 @@ function ExtraPromptField({ mode, brief, patchBrief }) {
 
 function AdvancedWriteFields({ brief, patchBrief }) {
   return (
-    <section className="advanced-panel">
-      <PillGroup
-        label="Cách xác định chiến lược triển khai"
-        options={["Hệ thống đề xuất", "Khám phá phương án mới", "Tôi tự thiết lập"]}
-        value={brief.advancedMode || "Hệ thống đề xuất"}
-        onChange={(advancedMode) => patchBrief({ advancedMode })}
-      />
-      <Notice>Hệ thống có thể đề xuất góc tiếp cận, cấu trúc, giọng điệu và lời kêu gọi hành động dựa trên dữ liệu nền.</Notice>
-      <PillGroup label="Góc triển khai" optional multi options={CONTENT_LINES} value={brief.contentLines} onChange={(contentLines) => patchBrief({ contentLines })} />
-      <TextArea label="Ý chính người đọc cần nhớ" optional rows={3} value={brief.mainMessage} placeholder="Để hệ thống đề xuất" onChange={(mainMessage) => patchBrief({ mainMessage })} />
-      <TextArea label="Ý bổ trợ cần đưa vào" optional rows={3} value={brief.subMessage} placeholder="Để hệ thống đề xuất" onChange={(subMessage) => patchBrief({ subMessage })} />
-      <PillGroup label="Khung thuyết phục" multi options={FORMULAS} value={[brief.formula]} onChange={(values) => patchBrief({ formula: values.at(-1) || "AIDA" })} />
-      <PillGroup label="Giọng thể hiện" multi options={CONTENT_STYLES} value={[brief.style]} onChange={(values) => patchBrief({ style: values.at(-1) || "Kể chuyện" })} />
-      <PillGroup
-        label="Hành động mong muốn sau khi đọc"
-        options={["Tìm hiểu sản phẩm", "Để lại thông tin", "Nhận tài liệu", "Theo dõi kênh", "Gửi cho người quen", "Tham gia thảo luận", "Chia sẻ bài viết", "Xem ưu đãi"]}
-        value={brief.cta}
-        onChange={(cta) => patchBrief({ cta })}
-      />
-      <RatioSlider
-        label="Mức độ hội thoại và trang trọng"
-        value={brief.vocabRatioValue ?? 50}
-        onChange={(vocabRatioValue) => patchBrief({ vocabRatioValue })}
-        leftLabel="Gần lời nói"
-        rightLabel="Trang trọng"
-      />
-      <RatioSlider
-        label="Mức độ cảm nhận và dữ liệu"
-        value={brief.qualityRatioValue ?? 50}
-        onChange={(qualityRatioValue) => patchBrief({ qualityRatioValue })}
-        leftLabel="Cảm nhận"
-        rightLabel="Dữ liệu"
-      />
-      <TextArea label="Thông tin kiểm chứng có thể sử dụng" optional hint rows={3} value={brief.evidence} placeholder="Nêu nguồn, số liệu hoặc để hệ thống bỏ qua mục này" onChange={(evidence) => patchBrief({ evidence })} />
-    </section>
+    <>
+      <BriefBlock
+        step="A"
+        eyebrow="BẢN ĐỒ LẬP LUẬN"
+        title="Quyết định cách dẫn người đọc đi qua nội dung"
+        description="Thiết lập đường đi của ý tưởng trước khi chọn câu chữ."
+        tone="advanced"
+      >
+        <PillGroup
+          label="Bạn muốn kiểm soát định hướng đến đâu?"
+          options={["Hệ thống dựng khung", "Đề xuất nhiều hướng", "Tôi tự quyết định"]}
+          value={brief.advancedMode || "Hệ thống dựng khung"}
+          onChange={(advancedMode) => patchBrief({ advancedMode })}
+        />
+        <PillGroup label="Cách mở rộng ý" optional multi options={CONTENT_LINES} value={brief.contentLines} onChange={(contentLines) => patchBrief({ contentLines })} />
+        <TextArea label="Một câu người đọc cần nhớ" optional rows={3} value={brief.mainMessage} placeholder="Viết như một kết luận ngắn, hoặc để trống để Sửa Bài tự hoàn thiện" onChange={(mainMessage) => patchBrief({ mainMessage })} />
+        <TextArea label="Các ý phải có để làm rõ kết luận" optional rows={3} value={brief.subMessage} placeholder="Liệt kê dữ kiện, lợi ích, phản biện hoặc ví dụ cần xuất hiện" onChange={(subMessage) => patchBrief({ subMessage })} />
+      </BriefBlock>
+
+      <BriefBlock
+        step="B"
+        eyebrow="CÁCH THỂ HIỆN"
+        title="Điều chỉnh nhịp, giọng và sức nặng của bản viết"
+        description="Các lựa chọn này tác động đến cách trình bày, không thay đổi dữ kiện gốc."
+        tone="advanced"
+      >
+        <PillGroup label="Khung triển khai" multi options={FORMULAS} value={[brief.formula]} onChange={(values) => patchBrief({ formula: values.at(-1) || "Vấn đề → Hệ quả → Giải pháp" })} />
+        <PillGroup label="Chất giọng" multi options={CONTENT_STYLES} value={[brief.style]} onChange={(values) => patchBrief({ style: values.at(-1) || "Rõ ràng trung tính" })} />
+        <PillGroup
+          label="Điểm kết của bản viết"
+          options={["Mở trang thông tin", "Để lại liên hệ", "Nhận tài liệu", "Theo dõi cập nhật", "Gửi cho đồng nghiệp", "Phản hồi ý kiến", "Chia sẻ nội dung", "Xem phương án phù hợp"]}
+          value={brief.cta}
+          onChange={(cta) => patchBrief({ cta })}
+        />
+        <RatioSlider
+          label="Cách nói"
+          value={brief.vocabRatioValue ?? 50}
+          onChange={(vocabRatioValue) => patchBrief({ vocabRatioValue })}
+          leftLabel="Đời thường"
+          rightLabel="Chuẩn mực"
+        />
+        <RatioSlider
+          label="Cơ sở thuyết phục"
+          value={brief.qualityRatioValue ?? 50}
+          onChange={(qualityRatioValue) => patchBrief({ qualityRatioValue })}
+          leftLabel="Trải nghiệm"
+          rightLabel="Dữ kiện"
+        />
+        <TextArea label="Nguồn có thể viện dẫn" optional rows={3} value={brief.evidence} placeholder="Số liệu, nghiên cứu, phản hồi thật hoặc đường dẫn nguồn; để trống nếu không có" onChange={(evidence) => patchBrief({ evidence })} />
+      </BriefBlock>
+    </>
   );
 }
 
@@ -819,21 +891,31 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
         </button>
       </div>
       {submode === "improve" ? (
-        <>
+        <BriefBlock
+          step="01"
+          eyebrow="BẢN GỐC"
+          title="Đưa nội dung cần biên tập vào bàn làm việc"
+          description="Hệ thống sẽ giữ dữ kiện và chủ đích, chỉ thay đổi những điểm bạn chọn."
+        >
           <TextArea
-            label="Bản nội dung cần chỉnh sửa"
+            label="Nội dung hiện tại"
             required
             rows={7}
             value={brief.sourceContent}
-            placeholder="Dán bài đăng, email, kịch bản hoặc đoạn văn bạn muốn làm rõ và nâng chất lượng..."
+            placeholder="Dán bài đăng, email, kịch bản hoặc đoạn văn cần biên tập..."
             onChange={(sourceContent) => patchBrief({ sourceContent })}
           />
-          <PillGroup label="Bạn muốn thay đổi điều gì?" optional multi options={IMPROVE_TYPES} value={brief.improveTypes} onChange={(improveTypes) => patchBrief({ improveTypes })} />
-        </>
+          <PillGroup label="Tiêu chí cho lần biên tập này" optional multi options={IMPROVE_TYPES} value={brief.improveTypes} onChange={(improveTypes) => patchBrief({ improveTypes })} />
+        </BriefBlock>
       ) : (
-        <>
+        <BriefBlock
+          step="01"
+          eyebrow="MẪU THAM CHIẾU"
+          title="Tách cách viết khỏi nội dung mẫu"
+          description="Sửa Bài chỉ học nhịp câu, cách dùng từ và sắc thái; không sao chép nội dung."
+        >
           <TextArea
-            label="Mẫu viết dùng để tham chiếu phong cách"
+            label="Đoạn thể hiện rõ cách viết"
             required
             rows={7}
             value={brief.styleSample}
@@ -841,7 +923,7 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
             onChange={(styleSample) => patchBrief({ styleSample })}
           />
           <TextArea
-            label="Nội dung mới cần triển khai"
+            label="Việc cần viết mới"
             required
             rows={4}
             value={brief.styleTopic}
@@ -849,14 +931,14 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
             onChange={(styleTopic) => patchBrief({ styleTopic })}
           />
           <TextArea
-            label="Điều kiện bổ sung"
+            label="Giới hạn cần tuân thủ"
             optional
             rows={4}
             value={brief.styleExtra}
             placeholder="Ví dụ: Tạo hai phương án, khoảng 300 từ, kết thúc bằng lời mời đăng ký tư vấn..."
             onChange={(styleExtra) => patchBrief({ styleExtra })}
           />
-        </>
+        </BriefBlock>
       )}
     </section>
   );
@@ -866,26 +948,29 @@ function IdeasForm({ brief, patchBrief, onGuide }) {
   return (
     <section className="form-section">
       <Notice action onGuide={onGuide} />
-      <TextInput
-        label="Chủ thể cần phát triển ý tưởng"
-        hint
-        value={brief.product}
-        placeholder="Ví dụ: Ứng dụng quản lý chi tiêu dành cho người mới đi làm..."
-        onChange={(product) => patchBrief({ product })}
-      />
-      <TextArea
-        label="Nhóm người bạn muốn tiếp cận"
-        required
-        hint
-        rows={4}
-        value={brief.audience}
-        placeholder="Ví dụ: Người mới đi làm 22-28 tuổi, thu nhập chưa ổn định, muốn quản lý tiền nhưng ngại ghi chép..."
-        onChange={(audience) => patchBrief({ audience })}
+      <BriefBlock
+        step="01"
+        eyebrow="VÙNG KHÁM PHÁ"
+        title="Xác định vấn đề cần mở thêm hướng"
+        description="Cho hệ thống biết đối tượng, người đọc và thay đổi bạn muốn tạo ra."
       >
-        <p className="field-hint">Mô tả hoàn cảnh, nhu cầu, rào cản và điều họ đang quan tâm.</p>
-      </TextArea>
-      <PillGroup label="Kết quả muốn hướng tới" multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
-      <PillGroup label="Số hướng triển khai" maxItems="Có thể yêu cầu tối đa 50 hướng" options={IDEA_COUNTS} value={brief.ideaCount} onChange={(ideaCount) => patchBrief({ ideaCount })} />
+        <TextInput
+          label="Chủ thể cần khai phá"
+          value={brief.product}
+          placeholder="Ví dụ: Ứng dụng quản lý chi tiêu dành cho người mới đi làm..."
+          onChange={(product) => patchBrief({ product })}
+        />
+        <TextArea
+          label="Người sẽ tiếp nhận nội dung"
+          required
+          rows={4}
+          value={brief.audience}
+          placeholder="Họ đang ở hoàn cảnh nào, muốn điều gì và vì sao chưa hành động?"
+          onChange={(audience) => patchBrief({ audience })}
+        />
+        <PillGroup label="Ý tưởng nên dẫn đến thay đổi nào?" multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
+        <PillGroup label="Số hướng muốn khám phá" maxItems="Tối đa 10 hướng trong một lần" options={IDEA_COUNTS} value={brief.ideaCount} onChange={(ideaCount) => patchBrief({ ideaCount })} />
+      </BriefBlock>
     </section>
   );
 }
@@ -893,8 +978,8 @@ function IdeasForm({ brief, patchBrief, onGuide }) {
 function TemplateStrip({ applyTemplate }) {
   return (
     <section className="template-strip">
-      <strong>Dùng tình huống mẫu</strong>
-      <span>Chọn một ngành gần với nhu cầu của bạn, sau đó thay lại thông tin cho phù hợp.</span>
+      <strong>Nạp một ví dụ gần với công việc</strong>
+      <span>Dữ liệu mẫu chỉ dùng để điền nhanh form và có thể sửa lại toàn bộ.</span>
       <div>
         {TEMPLATE_PRESETS.map((template) => (
           <button key={template.id} type="button" onClick={() => applyTemplate(template)}>

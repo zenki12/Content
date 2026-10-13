@@ -1,99 +1,53 @@
 export const CHANNELS = [
-  "Facebook",
-  "Instagram",
-  "YouTube",
-  "TikTok",
+  "Bài đăng mạng xã hội",
   "Video ngắn",
-  "Báo chí",
-  "Website / Blog",
-  "Zalo / Zalo OA",
+  "Bài website",
+  "Email",
+  "Tin nhắn chăm sóc",
+  "Bài báo / PR",
 ];
 
 export const GOALS = [
-  "Tăng mức độ ghi nhớ",
-  "Giới thiệu sản phẩm mới",
-  "Giúp thị trường hiểu vấn đề",
-  "Thu hút lượt truy cập",
-  "Tạo khách hàng tiềm năng",
-  "Nuôi dưỡng cộng đồng",
-  "Khuyến khích tương tác",
-  "Xây dựng sự tin tưởng",
-  "Thúc đẩy chuyển đổi",
-  "Thu hút ứng viên",
-  "Truyền tải giá trị thương hiệu",
-  "Mở rộng độ lan tỏa",
-  "Tạo tiếng cười",
-  "Khơi gợi cảm xúc",
-  "Nêu vấn đề cần thay đổi",
-  "Gợi lại ký ức",
-  "Chia sẻ mẹo hữu ích",
-  "Trình diễn kỹ năng hoặc quy trình",
-  "Thử nghiệm điều bất ngờ",
-  "Hé lộ điều ít người biết",
+  "Hiểu rõ một vấn đề",
+  "Tin tưởng hơn",
+  "Nhận ra nhu cầu",
+  "Thực hiện một hành động",
+  "Ghi nhớ thông điệp",
+  "Tham gia trao đổi",
+  "Quay lại theo dõi",
+  "Chia sẻ cho người khác",
 ];
 
 export const FORMATS = [
-  "Bài đăng dài",
-  "Nội dung ngắn",
-  "Kịch bản video",
-  "Bộ ý tưởng",
-  "Dàn ý triển khai",
+  "Bài hoàn chỉnh",
+  "Bản ngắn",
+  "Kịch bản nói",
+  "Dàn ý",
+  "Chuỗi nội dung",
   "Nội dung cho thiết kế",
 ];
 
 export const FORMULAS = [
-  "AIDA",
-  "PAS",
-  "BAB",
-  "FAB",
-  "4P",
-  "SSS",
-  "4U",
-  "ACCA",
-  "The String of Pearls",
-  "HELLYEAH",
-  "QUEST",
-  "Hook, Story, Offer",
-  "5 W's",
-  "The Value Sandwich",
-  "IDA",
-  "The Inverted Pyramid",
-  "The Hero's Journey",
-  "STAR",
-  "PASTOR",
-  "The 1-2-3-4 Formula",
+  "Vấn đề → Hệ quả → Giải pháp",
+  "Hiện trạng → Mong muốn → Cách làm",
+  "Lợi ích → Bằng chứng → Hành động",
+  "Câu chuyện → Bài học → Đề xuất",
+  "Câu hỏi → Giải đáp → Kết luận",
+  "Luận điểm → Dẫn chứng → Kết luận",
+  "Trước → Sau → Cầu nối",
+  "Thông tin quan trọng trước",
 ];
 
 export const CONTENT_STYLES = [
+  "Rõ ràng trung tính",
   "Chuyên môn dễ hiểu",
-  "Kỹ thuật chính xác",
-  "Phân tích có lập luận",
-  "Học thuật",
-  "Trang trọng",
-  "Kể chuyện",
-  "Khích lệ hành động",
-  "Thấu hiểu",
-  "Giàu hình ảnh",
-  "Hoài niệm",
-  "Giàu cảm xúc",
-  "Tự sự",
-  "Thuyết phục trực tiếp",
-  "Gợi tò mò",
-  "Tinh tế cao cấp",
-  "Cảnh báo",
-  "Đánh giá khách quan",
-  "Nhấn mạnh",
+  "Phân tích chặt chẽ",
   "Trò chuyện gần gũi",
-  "Hài hước",
+  "Kể chuyện",
+  "Thấu hiểu",
+  "Thuyết phục",
   "Hướng dẫn từng bước",
   "Tin tức",
-  "Bình luận chuyên môn",
-  "Châm biếm nhẹ",
-  "Tranh luận",
-  "Giả định tình huống",
-  "Đối chiếu",
-  "Ẩn dụ",
-  "Tưởng tượng",
   "Tối giản",
 ];
 
@@ -110,34 +64,17 @@ export const CONTENT_LINES = [
   "Thử nghiệm và kết quả",
   "Điểm khác biệt",
   "Lợi ích nổi bật",
-  "Phản hồi người dùng",
-  "Ưu đãi có thời hạn",
-  "Lời mời hành động",
-  "Gợi ý nâng cấp",
-  "Gói kết hợp",
-  "Ưu đãi theo mức",
-  "Quyền lợi đi kèm",
-  "Nội dung từ khách hàng",
-  "Sự kiện trực tuyến",
-  "Lớp thực hành",
-  "Buổi chia sẻ trực tuyến",
-  "Đối thoại chuyên đề",
 ];
 
 export const IMPROVE_TYPES = [
-  "Đánh giá tổng thể và chỉnh sửa",
-  "Rút gọn ý",
-  "Bổ sung chi tiết cần thiết",
-  "Làm mới cách diễn đạt",
-  "Sắp xếp lập luận",
-  "Sửa chính tả và ngữ pháp",
-  "Điều chỉnh giọng điệu",
-  "Tổ chức lại bố cục",
-  "Đi từ ví dụ đến kết luận",
-  "Triển khai các ý song song",
-  "Đi từ kết luận đến giải thích",
-  "Chuyển sang giọng trò chuyện",
-  "Chuyển sang giọng trang trọng",
+  "Làm rõ ý",
+  "Rút gọn",
+  "Bổ sung mạch nối",
+  "Sắp xếp lại",
+  "Sửa ngôn ngữ",
+  "Đổi chất giọng",
+  "Tăng tính thuyết phục",
+  "Giữ ý, viết mới toàn bộ",
 ];
 
 export const TEMPLATE_PRESETS = [
@@ -160,7 +97,7 @@ export const TEMPLATE_PRESETS = [
     label: "Thời trang",
     product: "Bộ sưu tập tủ đồ tối giản gồm các món có thể phối chéo, chất liệu dễ chăm sóc và phom phù hợp nhiều hoàn cảnh.",
     audience: "Nhân viên văn phòng muốn mặc chỉn chu mà không mất nhiều thời gian chọn đồ mỗi sáng.",
-    topic: "Xây dựng tủ đồ đi làm gọn nhẹ với tám món cơ bản",
+    topic: "Xây dựng tủ đồ đi làm gọn nhẹ với tám món nền tảng",
   },
   {
     id: "real-estate",
@@ -183,34 +120,34 @@ export function createEmptyBrief() {
     product: "",
     topic: "",
     feeling: "🥰 Chân thành, thấu hiểu",
-    channel: "Facebook",
-    channels: ["Facebook"],
+    channel: "Bài đăng mạng xã hội",
+    channels: ["Bài đăng mạng xã hội"],
     extra: "",
     variantCount: "1",
     audience: "",
-    hasHook: "Để hệ thống đề xuất",
-    goals: ["Thúc đẩy chuyển đổi"],
-    formats: ["Bài đăng dài"],
-    contentShape: "Văn bản",
+    hasHook: "Tự xây dựng điểm mở",
+    goals: ["Thực hiện một hành động"],
+    formats: ["Bài hoàn chỉnh"],
+    contentShape: "Theo đoạn",
     lengthType: "Số từ",
     lengthValue: "400",
     contentLines: [],
     mainMessage: "",
     subMessage: "",
-    formula: "AIDA",
-    style: "Kể chuyện",
-    cta: "Tìm hiểu sản phẩm",
+    formula: "Vấn đề → Hệ quả → Giải pháp",
+    style: "Rõ ràng trung tính",
+    cta: "Mở trang thông tin",
     evidence: "",
-    vocabRatio: "50% Định tính – 50% Định lượng",
+    vocabRatio: "50% Đời thường – 50% Chuẩn mực",
     vocabRatioValue: 50,
     qualityRatioValue: 50,
     sourceContent: "",
-    improveTypes: ["Đánh giá tổng thể và chỉnh sửa"],
+    improveTypes: ["Làm rõ ý"],
     styleSample: "",
     styleTopic: "",
     styleExtra: "",
     ideaCount: "5 hướng",
-    advancedMode: "Hệ thống đề xuất",
+    advancedMode: "Hệ thống dựng khung",
   };
 }
 
@@ -225,6 +162,7 @@ function field(label, value) {
 }
 
 export function summarizeBrief(brief) {
+  const length = [brief.lengthValue, brief.lengthType].filter(Boolean).join(" ");
   return [
     field("Sản phẩm hoặc vấn đề", brief.product),
     field("Nội dung cần triển khai", brief.topic),
@@ -233,6 +171,8 @@ export function summarizeBrief(brief) {
     field("Kết quả mong muốn", brief.goals),
     field("Loại bản thảo", brief.formats),
     field("Giọng thể hiện", brief.style || brief.feeling),
+    field("Cấu trúc hiển thị", brief.contentShape),
+    field("Độ dài dự kiến", length),
     field("Ý chính cần ghi nhớ", brief.mainMessage),
     field("Ý bổ trợ", brief.subMessage),
     field("Dữ kiện kiểm chứng", brief.evidence),
@@ -247,11 +187,11 @@ export function compileWritePrompt({ mode, brief }) {
   const count = brief.variantCount || "1";
   const vocabNote =
     brief.vocabRatioValue !== undefined
-      ? `- Tỉ lệ văn nói/viết: ${brief.vocabRatioValue}% Văn nói – ${100 - brief.vocabRatioValue}% Văn viết`
-      : field("Tỉ lệ văn nói / văn viết", brief.vocabRatio);
+      ? `- Cách nói: ${brief.vocabRatioValue}% Đời thường – ${100 - brief.vocabRatioValue}% Chuẩn mực`
+      : field("Cách nói", brief.vocabRatio);
   const qualityNote =
     brief.qualityRatioValue !== undefined
-      ? `- Tỉ lệ định tính/định lượng: ${brief.qualityRatioValue}% Định tính – ${100 - brief.qualityRatioValue}% Định lượng`
+      ? `- Cơ sở thuyết phục: ${brief.qualityRatioValue}% Trải nghiệm – ${100 - brief.qualityRatioValue}% Dữ kiện`
       : "";
 
   return {
@@ -260,12 +200,13 @@ export function compileWritePrompt({ mode, brief }) {
     user: `Hãy tạo ${count} bản nội dung từ dữ liệu đầu vào dưới đây.
 
 Mức biên tập: ${mode}
-${advanced ? "Yêu cầu chuyên sâu: vận dụng góc triển khai, khung thuyết phục, giọng thể hiện, hành động mong muốn và dữ kiện được cung cấp." : "Yêu cầu biên soạn: ưu tiên mạch lạc, đúng người đọc, đúng kênh và có kết thúc phù hợp."}
+${advanced ? "Chế độ chỉ đạo: vận dụng đường lập luận, khung triển khai, chất giọng, điểm kết và nguồn được cung cấp." : "Chế độ dựng bài: ưu tiên mạch lạc, đúng người đọc, đúng ngữ cảnh sử dụng và có kết thúc phù hợp."}
 
 Dữ liệu đầu vào:
 ${summarizeBrief(brief)}
 ${field("Khung thuyết phục", brief.formula)}
 ${field("Góc triển khai", brief.contentLines)}
+${field("Điểm kết", brief.cta)}
 ${vocabNote}
 ${qualityNote}
 

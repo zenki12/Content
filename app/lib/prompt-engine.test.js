@@ -15,13 +15,13 @@ test("summarizeBrief includes core marketing context", () => {
     ...createEmptyBrief(),
     product: "Khoá IELTS 60 ngày",
     audience: "Người đi làm kẹt ở band 5.5",
-    goals: ["Tạo khách hàng tiềm năng"],
+    goals: ["Thực hiện một hành động"],
     evidence: "Cam kết học lại miễn phí",
   });
 
   assert.match(summary, /Khoá IELTS 60 ngày/);
   assert.match(summary, /kẹt ở band 5\.5/);
-  assert.match(summary, /Tạo khách hàng tiềm năng/);
+  assert.match(summary, /Thực hiện một hành động/);
   assert.match(summary, /học lại miễn phí/);
 });
 
@@ -31,16 +31,16 @@ test("compileWritePrompt adapts to advanced mode fields", () => {
     brief: {
       ...createEmptyBrief(),
       product: "Serum Vitamin C",
-      formula: "AIDA",
+      formula: "Vấn đề → Hệ quả → Giải pháp",
       contentLines: ["Tình huống thực tế", "Điểm khác biệt"],
-      vocabRatio: "50% Định tính - 50% Định lượng",
+      vocabRatio: "50% Đời thường - 50% Chuẩn mực",
     },
   });
 
   assert.match(prompt.system, /biên tập viên nội dung tiếng Việt/);
   assert.match(prompt.user, /Mức biên tập: advanced/);
-  assert.match(prompt.user, /AIDA/);
-  assert.match(prompt.user, /50% Định tính/);
+  assert.match(prompt.user, /Vấn đề → Hệ quả → Giải pháp/);
+  assert.match(prompt.user, /50% Đời thường/);
 });
 
 test("compileImprovePrompt focuses on rewriting existing content", () => {
@@ -49,12 +49,12 @@ test("compileImprovePrompt focuses on rewriting existing content", () => {
     brief: {
       ...createEmptyBrief(),
       sourceContent: "Bài viết cũ cần sửa",
-      improveTypes: ["Rút gọn ý", "Sắp xếp lập luận"],
+      improveTypes: ["Rút gọn", "Sắp xếp lại"],
     },
   });
 
   assert.match(prompt.user, /Bài viết cũ cần sửa/);
-  assert.match(prompt.user, /Rút gọn ý, Sắp xếp lập luận/);
+  assert.match(prompt.user, /Rút gọn, Sắp xếp lại/);
   assert.match(prompt.user, /bản đã biên tập hoàn chỉnh/);
 });
 
