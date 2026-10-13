@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MODEL_PRESETS, applyModelPreset } from "../lib/model-presets.js";
 import {
   CHANNELS,
@@ -15,6 +15,7 @@ import {
   createEmptyBrief,
   summarizeBrief,
 } from "../lib/prompt-engine.js";
+import { createWorkflowBriefs, validateWorkspace } from "../lib/workflow-state.js";
 
 const HISTORY_KEY = "sua-bai-history";
 const SETTINGS_KEY = "sua-bai-settings";
@@ -22,6 +23,7 @@ const THEME_KEY = "sua-bai-theme";
 const TUTORIAL_KEY = "sua-bai-tutorial-done";
 
 const DEFAULT_SETTINGS = {
+  providerId: "openai",
   model: "gpt-5.4-mini",
   baseUrl: "",
   apiKey: "",
@@ -63,7 +65,7 @@ const QUICK_FEELINGS = [
 
 const IDEA_COUNTS = ["3 hướng", "5 hướng", "7 hướng", "10 hướng"];
 
-const TUTORIAL_STEPS = [
+const WRITE_TUTORIAL_STEPS = [
   {
     title: "Chọn cách bạn muốn bắt đầu",
     body: "Nháp nhanh nhận một yêu cầu gọn. Dựng bài dẫn bạn qua bốn chặng. Chỉ đạo cho phép kiểm soát lập luận và cách thể hiện.",
@@ -77,6 +79,19 @@ const TUTORIAL_STEPS = [
     body: "Tại mục Yêu cầu riêng, bạn có thể quy định cách xưng hô, độ dài, lời kêu gọi hành động và những điều cần tránh.",
   },
 ];
+
+const WORKFLOW_TUTORIAL_STEPS = {
+  improve: [
+    { title: "Chọn đúng kiểu biên tập", body: "Dùng Chỉnh sửa khi đã có bản gốc. Dùng Viết theo mẫu khi muốn học cách diễn đạt từ một đoạn tham chiếu." },
+    { title: "Giữ dữ kiện gốc", body: "Dán đầy đủ tên riêng, số liệu và nội dung bắt buộc. Hệ thống chỉ thay đổi những điểm bạn chọn." },
+    { title: "Biên tập tiếp trên kết quả", body: "Kết quả có thể sửa trực tiếp, sao chép hoặc tạo lại trước khi đưa vào sử dụng." },
+  ],
+  ideas: [
+    { title: "Xác định vùng cần khai phá", body: "Nêu rõ chủ thể và người đọc để các hướng đề xuất không bị chung chung." },
+    { title: "Chọn quy mô khám phá", body: "Tạo ít hướng để đào sâu hoặc nhiều hướng để mở rộng phạm vi lựa chọn." },
+    { title: "Đưa hướng tốt sang bàn soạn", body: "Sau khi có kết quả, dùng nút Đưa sang Soạn mới để tiếp tục phát triển thành bản hoàn chỉnh." },
+  ],
+};
 
 function readJson(key, fallback) {
   try {
@@ -138,31 +153,33 @@ function BriefBlock({ step, eyebrow, title, description, tone = "", children }) 
   );
 }
 
-function TextArea({ label, value, onChange, placeholder, required, optional, hint, rows = 4, children }) {
+function TextArea({ label, value, onChange, placeholder, required, optional, hint, rows = 4, children, fieldKey, fieldError }) {
   return (
-    <label className="form-field">
+    <label className={`form-field ${fieldError ? "field-invalid" : ""}`} data-field={fieldKey}>
       <FieldLabel required={required} optional={optional} hint={hint}>
         {label}
       </FieldLabel>
-      <textarea rows={rows} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} />
+      <textarea aria-invalid={fieldError ? true : undefined} rows={rows} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} />
+      {fieldError ? <span className="field-error">{fieldError}</span> : null}
       {children}
     </label>
   );
 }
 
-function TextInput({ label, value, onChange, placeholder, required, hint, children }) {
+function TextInput({ label, value, onChange, placeholder, required, hint, children, fieldKey, fieldError, type = "text" }) {
   return (
-    <label className="form-field">
+    <label className={`form-field ${fieldError ? "field-invalid" : ""}`} data-field={fieldKey}>
       <FieldLabel required={required} hint={hint}>
         {label}
       </FieldLabel>
-      <input value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} />
+      <input type={type} aria-invalid={fieldError ? true : undefined} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} />
+      {fieldError ? <span className="field-error">{fieldError}</span> : null}
       {children}
     </label>
   );
 }
 
-function PillGroup({ label, options, value, onChange, multi = false, required, optional, hint, maxItems }) {
+function PillGroup({ label, options, value, onChange, multi = false, required, optional, hint, maxItems, fieldKey, fieldError }) {
   const [showCustom, setShowCustom] = useState(false);
   const [customValue, setCustomValue] = useState("");
   const selected = Array.isArray(value) ? value : [value].filter(Boolean);
@@ -176,7 +193,7 @@ function PillGroup({ label, options, value, onChange, multi = false, required, o
   }
 
   return (
-    <div className="form-field">
+    <div className={`form-field ${fieldError ? "field-invalid" : ""}`} data-field={fieldKey}>
       <FieldLabel required={required} optional={optional} hint={hint}>
         {label}
       </FieldLabel>
@@ -208,6 +225,7 @@ function PillGroup({ label, options, value, onChange, multi = false, required, o
           Thêm lựa chọn
         </button>
       </div>
+      {fieldError ? <span className="field-error">{fieldError}</span> : null}
       {showCustom ? (
         <div className="custom-pill-input">
           <input
@@ -257,9 +275,19 @@ function RatioSlider({ label, value, onChange, leftLabel, rightLabel }) {
   );
 }
 
-function TutorialOverlay({ onDone }) {
+function TutorialOverlay({ onDone, steps }) {
   const [step, setStep] = useState(0);
-  const current = TUTORIAL_STEPS[step];
+  const cardRef = useRef(null);
+  const current = steps[step];
+
+  useEffect(() => {
+    cardRef.current?.focus();
+    function closeOnEscape(event) {
+      if (event.key === "Escape") onDone();
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [onDone]);
 
   function finish() {
     window.localStorage.setItem(TUTORIAL_KEY, "1");
@@ -267,15 +295,15 @@ function TutorialOverlay({ onDone }) {
   }
 
   return (
-    <div className="tutorial-overlay">
-      <div className="tutorial-card">
+    <div className="tutorial-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onDone()}>
+      <div className="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" tabIndex={-1} ref={cardRef}>
         <div className="tutorial-meta">
-          Bước {step + 1} / {TUTORIAL_STEPS.length}
+          Bước {step + 1} / {steps.length}
         </div>
-        <h3 className="tutorial-title">{current.title}</h3>
+        <h3 className="tutorial-title" id="tutorial-title">{current.title}</h3>
         <p className="tutorial-body">{current.body}</p>
         <div className="tutorial-dots">
-          {TUTORIAL_STEPS.map((item, index) => (
+          {steps.map((item, index) => (
             <span key={item.title} className={index === step ? "tutorial-dot active" : "tutorial-dot"} />
           ))}
         </div>
@@ -286,9 +314,9 @@ function TutorialOverlay({ onDone }) {
           <button
             type="button"
             className="tutorial-next"
-            onClick={() => (step < TUTORIAL_STEPS.length - 1 ? setStep(step + 1) : finish())}
+            onClick={() => (step < steps.length - 1 ? setStep(step + 1) : finish())}
           >
-            {step < TUTORIAL_STEPS.length - 1 ? "Xem tiếp" : "Bắt đầu"}
+            {step < steps.length - 1 ? "Xem tiếp" : "Bắt đầu"}
           </button>
         </div>
       </div>
@@ -312,14 +340,20 @@ function Notice({ tone = "purple", children, action = false, onGuide }) {
   return <div className={`notice ${tone}`}>{children}</div>;
 }
 
-function ResultBlock({ title, text, onRegenerate }) {
+function ResultBlock({ title, text, onChange, onRegenerate, onUseAsDraft }) {
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState("");
   if (!text) return null;
 
   async function copyText() {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setCopyError("");
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopyError("Không thể sao chép tự động. Hãy chọn nội dung và sao chép thủ công.");
+    }
   }
 
   return (
@@ -333,9 +367,16 @@ function ResultBlock({ title, text, onRegenerate }) {
           <button type="button" className="result-action-btn regen" onClick={onRegenerate}>
             Tạo lại
           </button>
+          {onUseAsDraft ? (
+            <button type="button" className="result-action-btn primary" onClick={onUseAsDraft}>
+              Đưa sang Soạn mới
+            </button>
+          ) : null}
         </div>
       </div>
-      <pre>{text}</pre>
+      <label className="result-editor-label" htmlFor="result-editor">Có thể chỉnh sửa trực tiếp</label>
+      <textarea id="result-editor" className="result-editor" value={text} onChange={(event) => onChange(event.target.value)} />
+      {copyError ? <p className="result-feedback" role="alert">{copyError}</p> : null}
     </section>
   );
 }
@@ -345,7 +386,7 @@ export default function GeneratorApp() {
   const [mode, setMode] = useState("basic");
   const [workflow, setWorkflow] = useState("write");
   const [improveSubmode, setImproveSubmode] = useState("improve");
-  const [brief, setBrief] = useState(() => createEmptyBrief());
+  const [workflowBriefs, setWorkflowBriefs] = useState(() => createWorkflowBriefs());
   const [history, setHistory] = useState([]);
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [theme, setTheme] = useState("light");
@@ -353,7 +394,11 @@ export default function GeneratorApp() {
   const [output, setOutput] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState("");
+
+  const brief = workflowBriefs[workflow];
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -381,9 +426,17 @@ export default function GeneratorApp() {
   }, [mounted, theme]);
 
   const briefSummary = useMemo(() => summarizeBrief(brief), [brief]);
+  const tutorialSteps = workflow === "write" ? WRITE_TUTORIAL_STEPS : WORKFLOW_TUTORIAL_STEPS[workflow];
 
   function patchBrief(patch) {
-    setBrief((current) => ({ ...current, ...patch }));
+    setWorkflowBriefs((current) => ({
+      ...current,
+      [workflow]: { ...current[workflow], ...patch },
+    }));
+    if (fieldError && Object.keys(patch).includes(fieldError.field)) {
+      setFieldError(null);
+      setError("");
+    }
   }
 
   function applyTemplate(template) {
@@ -407,28 +460,33 @@ export default function GeneratorApp() {
     return data.text || "";
   }
 
-  function validate() {
-    if (!settings.apiKey.trim()) return "Hãy thêm API key trong mục Kết nối AI trước khi tạo nội dung.";
-    if (workflow === "write") {
-      if (mode === "entry" && !brief.topic.trim()) return "Hãy cho biết chủ đề bạn muốn triển khai.";
-      if (mode !== "entry" && !brief.product.trim()) return "Hãy mô tả sản phẩm, dịch vụ hoặc vấn đề cần truyền đạt.";
-      if (mode !== "entry" && !brief.topic.trim()) return "Hãy chốt một ý trung tâm cho bản viết.";
-    }
-    if (workflow === "improve" && improveSubmode === "improve" && !brief.sourceContent.trim()) {
-      return "Hãy dán bản nội dung bạn muốn chỉnh sửa.";
-    }
-    if (workflow === "improve" && improveSubmode === "style") {
-      if (!brief.styleSample.trim()) return "Hãy cung cấp một đoạn mẫu để hệ thống nhận diện cách viết.";
-      if (!brief.styleTopic.trim()) return "Hãy nhập chủ đề cần viết theo phong cách vừa phân tích.";
-    }
-    if (workflow === "ideas" && !brief.product.trim()) return "Hãy cho biết đối tượng hoặc giải pháp cần phát triển ý tưởng.";
-    return "";
+  function resetTransientState() {
+    setOutput("");
+    setError("");
+    setFieldError(null);
+    setStatus("");
+  }
+
+  function focusField(field) {
+    requestAnimationFrame(() => {
+      if (field === "apiKey") {
+        const settingsPanel = document.querySelector(".ai-settings");
+        if (settingsPanel) settingsPanel.open = true;
+      }
+      const target = document.querySelector(`[data-field="${field}"]`);
+      target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      target?.querySelector("input, textarea, button")?.focus();
+    });
   }
 
   async function generate() {
-    const validationError = validate();
-    setError(validationError);
-    if (validationError) return;
+    const validationError = validateWorkspace({ settings, workflow, improveSubmode, mode, brief });
+    setFieldError(validationError);
+    setError(validationError?.message || "");
+    if (validationError) {
+      focusField(validationError.field);
+      return;
+    }
 
     setOutput("");
     setIsGenerating(true);
@@ -439,6 +497,7 @@ export default function GeneratorApp() {
         { role: "system", content: prompt.system },
         { role: "user", content: prompt.user },
       ]);
+      if (!text.trim()) throw new Error("Mô hình không trả về nội dung. Hãy thử lại hoặc chọn mô hình khác.");
       setOutput(text);
       const item = {
         id: crypto.randomUUID(),
@@ -466,16 +525,73 @@ export default function GeneratorApp() {
     setMode(item.mode || "basic");
     setWorkflow(item.workflow || "write");
     setImproveSubmode(item.improveSubmode || "improve");
-    setBrief({ ...createEmptyBrief(), ...item.brief });
+    setWorkflowBriefs((current) => ({
+      ...current,
+      [item.workflow || "write"]: { ...createEmptyBrief(), ...item.brief },
+    }));
     setOutput(item.output || "");
+    setError("");
+    setFieldError(null);
+    setStatus("");
   }
 
   function selectMode(nextMode) {
     setMode(nextMode);
     setWorkflow("write");
-    setOutput("");
-    setError("");
-    setStatus("");
+    resetTransientState();
+  }
+
+  function selectWorkflow(nextWorkflow) {
+    if (nextWorkflow === workflow) return;
+    setWorkflow(nextWorkflow);
+    resetTransientState();
+  }
+
+  function selectImproveSubmode(nextSubmode) {
+    if (nextSubmode === improveSubmode) return;
+    setImproveSubmode(nextSubmode);
+    resetTransientState();
+  }
+
+  function useIdeasAsDraft() {
+    setWorkflowBriefs((current) => ({
+      ...current,
+      write: {
+        ...current.write,
+        product: current.ideas.product,
+        audience: current.ideas.audience,
+        goals: current.ideas.goals,
+        topic: "Phát triển một hướng phù hợp từ danh sách ý tưởng đã chọn",
+        extra: `Các hướng đã khám phá:\n${output}`,
+      },
+    }));
+    setWorkflow("write");
+    setMode("basic");
+    resetTransientState();
+  }
+
+  async function testConnection() {
+    const validationError = validateWorkspace({
+      settings,
+      workflow: "ideas",
+      improveSubmode: "improve",
+      mode: "basic",
+      brief: { ...createEmptyBrief(), product: "Kiểm tra kết nối", audience: "Người dùng" },
+    });
+    if (validationError?.field === "apiKey") {
+      setConnectionStatus(validationError.message);
+      return;
+    }
+    setConnectionStatus("Đang kiểm tra...");
+    try {
+      await callGenerate([
+        { role: "system", content: "Chỉ trả lời đúng một từ: OK" },
+        { role: "user", content: "Kiểm tra kết nối." },
+      ]);
+      setConnectionStatus("Kết nối thành công.");
+    } catch (connectionError) {
+      setConnectionStatus(connectionError.message);
+    }
   }
 
   function ctaLabel() {
@@ -520,7 +636,7 @@ export default function GeneratorApp() {
                 type="button"
                 key={item.id}
                 className={workflow === item.id ? "active" : ""}
-                onClick={() => setWorkflow(item.id)}
+                onClick={() => selectWorkflow(item.id)}
               >
                 <span className="workflow-code" aria-hidden="true">{item.code}</span>
                 <span className="nav-copy">
@@ -541,20 +657,27 @@ export default function GeneratorApp() {
                     key={preset.id}
                     type="button"
                     className={active ? "model-option active" : "model-option"}
-                    onClick={() => setSettings((current) => applyModelPreset(current, preset))}
+                    onClick={() => {
+                      setSettings((current) => applyModelPreset(current, preset));
+                      setConnectionStatus("");
+                    }}
                   >
                     <span>{preset.provider}</span>
                     <strong>{preset.label}</strong>
                     <code>{preset.model}</code>
                     <em>{preset.costLabel}</em>
+                    <small>{preset.note}</small>
                   </button>
                 );
               })}
             </div>
             <div className="settings-fields">
-              <TextInput label="Khóa truy cập API" value={settings.apiKey} placeholder="Nhập khóa của nhà cung cấp..." onChange={(apiKey) => setSettings((current) => ({ ...current, apiKey }))} />
+              <TextInput type="password" fieldKey="apiKey" fieldError={fieldError?.field === "apiKey" ? fieldError.message : ""} label="Khóa truy cập API" value={settings.apiKey} placeholder="Nhập khóa của nhà cung cấp..." onChange={(apiKey) => { setSettings((current) => ({ ...current, apiKey })); setConnectionStatus(""); setFieldError(null); setError(""); }} />
               <TextInput label="Mô hình" value={settings.model} placeholder="Tên mô hình AI" onChange={(model) => setSettings((current) => ({ ...current, model }))} />
-              <TextInput label="Địa chỉ API tùy chỉnh" value={settings.baseUrl} placeholder="Có thể để trống khi dùng OpenAI" onChange={(baseUrl) => setSettings((current) => ({ ...current, baseUrl }))} />
+              <div className="connection-check">
+                <button type="button" onClick={testConnection}>Kiểm tra kết nối</button>
+                {connectionStatus ? <span role="status">{connectionStatus}</span> : null}
+              </div>
             </div>
           </details>
 
@@ -572,8 +695,6 @@ export default function GeneratorApp() {
               <button className="theme-toggle" type="button" aria-label="Đổi giao diện" onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}>
                 {theme === "dark" ? "Nền sáng" : "Nền tối"}
               </button>
-              <button className="service-btn" type="button">Nâng cấp</button>
-              <button className="login-btn" type="button">Tài khoản</button>
             </div>
           </div>
 
@@ -590,12 +711,12 @@ export default function GeneratorApp() {
             <div className="editor-layout">
               <div className="editor-column">
                 {workflow === "write" ? (
-                  <WriteForm mode={mode} brief={brief} patchBrief={patchBrief} applyTemplate={applyTemplate} onGuide={() => setShowTutorial(true)} />
+                  <WriteForm mode={mode} brief={brief} patchBrief={patchBrief} applyTemplate={applyTemplate} onGuide={() => setShowTutorial(true)} fieldError={fieldError} />
                 ) : null}
                 {workflow === "improve" ? (
-                  <ImproveForm submode={improveSubmode} setSubmode={setImproveSubmode} brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} />
+                  <ImproveForm submode={improveSubmode} setSubmode={selectImproveSubmode} brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} fieldError={fieldError} />
                 ) : null}
-                {workflow === "ideas" ? <IdeasForm brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} /> : null}
+                {workflow === "ideas" ? <IdeasForm brief={brief} patchBrief={patchBrief} onGuide={() => setShowTutorial(true)} fieldError={fieldError} /> : null}
 
                 <div className="center-action">
                   <button className="main-cta" type="button" disabled={isGenerating} onClick={generate}>
@@ -606,17 +727,27 @@ export default function GeneratorApp() {
                 {status ? <div role="status" aria-live="polite"><Notice>Đang xử lý: {status}</Notice></div> : null}
               </div>
 
-              <OutputSection output={output} briefSummary={briefSummary} history={history} loadHistory={loadHistory} regenerate={generate} />
+              <OutputSection
+                output={output}
+                setOutput={setOutput}
+                workflow={workflow}
+                briefSummary={briefSummary}
+                history={history}
+                setHistory={setHistory}
+                loadHistory={loadHistory}
+                regenerate={generate}
+                useIdeasAsDraft={useIdeasAsDraft}
+              />
             </div>
           </div>
         </div>
-        {mounted && showTutorial && (mode === "basic" || mode === "advanced") ? <TutorialOverlay onDone={() => setShowTutorial(false)} /> : null}
+        {mounted && showTutorial ? <TutorialOverlay steps={tutorialSteps} onDone={() => setShowTutorial(false)} /> : null}
       </section>
     </main>
   );
 }
 
-function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
+function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide, fieldError }) {
   if (mode === "entry") {
     return (
       <section className="form-section">
@@ -635,6 +766,8 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
         >
           <TextArea
             label="Bạn muốn có một bản viết về điều gì?"
+            fieldKey="topic"
+            fieldError={fieldError?.field === "topic" ? fieldError.message : ""}
             required
             rows={4}
             value={brief.topic}
@@ -658,6 +791,8 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
         >
           <PillGroup
             label="Cảm giác khi đọc"
+            fieldKey="feeling"
+            fieldError={fieldError?.field === "feeling" ? fieldError.message : ""}
             required
             options={QUICK_FEELINGS}
             value={brief.feeling}
@@ -665,6 +800,8 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
           />
           <PillGroup
             label="Nơi bạn sẽ dùng bản viết"
+            fieldKey="channel"
+            fieldError={fieldError?.field === "channel" ? fieldError.message : ""}
             required
             options={CHANNELS}
             value={brief.channel}
@@ -695,7 +832,7 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
           </div>
         </div>
         <AdvancedWriteFields brief={brief} patchBrief={patchBrief} />
-        <BasicBriefFields mode={mode} brief={brief} patchBrief={patchBrief} />
+        <BasicBriefFields mode={mode} brief={brief} patchBrief={patchBrief} fieldError={fieldError} />
       </section>
     );
   }
@@ -710,12 +847,12 @@ function WriteForm({ mode, brief, patchBrief, applyTemplate, onGuide }) {
           <p>Hoàn thiện lần lượt dữ kiện, ý định, thành phẩm và các giới hạn cần giữ.</p>
         </div>
       </div>
-      <BasicBriefFields mode={mode} brief={brief} patchBrief={patchBrief} />
+      <BasicBriefFields mode={mode} brief={brief} patchBrief={patchBrief} fieldError={fieldError} />
     </section>
   );
 }
 
-function BasicBriefFields({ mode, brief, patchBrief }) {
+function BasicBriefFields({ mode, brief, patchBrief, fieldError }) {
   return (
     <>
       <BriefBlock
@@ -726,6 +863,8 @@ function BasicBriefFields({ mode, brief, patchBrief }) {
       >
         <TextArea
           label="Thông tin không được viết sai"
+          fieldKey="product"
+          fieldError={fieldError?.field === "product" ? fieldError.message : ""}
           required
           rows={4}
           value={brief.product}
@@ -736,6 +875,8 @@ function BasicBriefFields({ mode, brief, patchBrief }) {
         </TextArea>
         <TextArea
           label="Người sẽ đọc bản này"
+          fieldKey="audience"
+          fieldError={fieldError?.field === "audience" ? fieldError.message : ""}
           required
           rows={3}
           value={brief.audience}
@@ -752,14 +893,16 @@ function BasicBriefFields({ mode, brief, patchBrief }) {
       >
         <TextArea
           label="Ý trung tâm cần truyền đạt"
+          fieldKey="topic"
+          fieldError={fieldError?.field === "topic" ? fieldError.message : ""}
           required
           rows={3}
           value={brief.topic}
           placeholder="Ví dụ: Giúp quản lý nhận ra báo cáo thủ công đang lấy mất thời gian ra quyết định..."
           onChange={(topic) => patchBrief({ topic })}
         />
-        <PillGroup label="Sau khi đọc, điều gì nên thay đổi?" required multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
-        <PillGroup label="Bản viết sẽ được dùng trong ngữ cảnh nào?" required multi options={CHANNELS} value={brief.channels} onChange={(channels) => patchBrief({ channels })} />
+        <PillGroup fieldKey="goals" fieldError={fieldError?.field === "goals" ? fieldError.message : ""} label="Sau khi đọc, điều gì nên thay đổi?" required multi options={GOALS} value={brief.goals} onChange={(goals) => patchBrief({ goals })} />
+        <PillGroup fieldKey="channels" fieldError={fieldError?.field === "channels" ? fieldError.message : ""} label="Bản viết sẽ được dùng trong ngữ cảnh nào?" required multi options={CHANNELS} value={brief.channels} onChange={(channels) => patchBrief({ channels })} />
       </BriefBlock>
 
       <BriefBlock
@@ -768,7 +911,7 @@ function BasicBriefFields({ mode, brief, patchBrief }) {
         title="Mô tả thứ bạn muốn nhận lại"
         description="Chọn dạng đầu ra và quy mô phù hợp với nơi sử dụng."
       >
-        <PillGroup label="Dạng nội dung" required multi options={FORMATS} value={brief.formats} onChange={(formats) => patchBrief({ formats })} />
+        <PillGroup fieldKey="formats" fieldError={fieldError?.field === "formats" ? fieldError.message : ""} label="Dạng nội dung" required multi options={FORMATS} value={brief.formats} onChange={(formats) => patchBrief({ formats })} />
         <div className="brief-inline-grid">
           <PillGroup label="Cấu trúc hiển thị" options={["Theo đoạn", "Theo bảng"]} value={brief.contentShape} onChange={(contentShape) => patchBrief({ contentShape })} />
           <PillGroup label="Đo độ dài bằng" options={["Số từ", "Thời lượng", "Số đoạn"]} value={brief.lengthType} onChange={(lengthType) => patchBrief({ lengthType })} />
@@ -878,7 +1021,7 @@ function AdvancedWriteFields({ brief, patchBrief }) {
   );
 }
 
-function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
+function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide, fieldError }) {
   return (
     <section className="form-section">
       <Notice action onGuide={onGuide} />
@@ -899,6 +1042,8 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
         >
           <TextArea
             label="Nội dung hiện tại"
+            fieldKey="sourceContent"
+            fieldError={fieldError?.field === "sourceContent" ? fieldError.message : ""}
             required
             rows={7}
             value={brief.sourceContent}
@@ -916,6 +1061,8 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
         >
           <TextArea
             label="Đoạn thể hiện rõ cách viết"
+            fieldKey="styleSample"
+            fieldError={fieldError?.field === "styleSample" ? fieldError.message : ""}
             required
             rows={7}
             value={brief.styleSample}
@@ -924,6 +1071,8 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
           />
           <TextArea
             label="Việc cần viết mới"
+            fieldKey="styleTopic"
+            fieldError={fieldError?.field === "styleTopic" ? fieldError.message : ""}
             required
             rows={4}
             value={brief.styleTopic}
@@ -944,7 +1093,7 @@ function ImproveForm({ submode, setSubmode, brief, patchBrief, onGuide }) {
   );
 }
 
-function IdeasForm({ brief, patchBrief, onGuide }) {
+function IdeasForm({ brief, patchBrief, onGuide, fieldError }) {
   return (
     <section className="form-section">
       <Notice action onGuide={onGuide} />
@@ -956,12 +1105,17 @@ function IdeasForm({ brief, patchBrief, onGuide }) {
       >
         <TextInput
           label="Chủ thể cần khai phá"
+          required
+          fieldKey="product"
+          fieldError={fieldError?.field === "product" ? fieldError.message : ""}
           value={brief.product}
           placeholder="Ví dụ: Ứng dụng quản lý chi tiêu dành cho người mới đi làm..."
           onChange={(product) => patchBrief({ product })}
         />
         <TextArea
           label="Người sẽ tiếp nhận nội dung"
+          fieldKey="audience"
+          fieldError={fieldError?.field === "audience" ? fieldError.message : ""}
           required
           rows={4}
           value={brief.audience}
@@ -991,7 +1145,13 @@ function TemplateStrip({ applyTemplate }) {
   );
 }
 
-function OutputSection({ output, briefSummary, history, loadHistory, regenerate }) {
+function OutputSection({ output, setOutput, workflow, briefSummary, history, setHistory, loadHistory, regenerate, useIdeasAsDraft }) {
+  function removeHistory(id) {
+    const next = history.filter((item) => item.id !== id);
+    setHistory(next);
+    writeJson(HISTORY_KEY, next);
+  }
+
   return (
     <section className="output-zone">
       {!output ? (
@@ -1000,7 +1160,13 @@ function OutputSection({ output, briefSummary, history, loadHistory, regenerate 
           <span>Hoàn tất các thông tin cần thiết rồi chọn nút tạo nội dung ở cuối biểu mẫu.</span>
         </div>
       ) : null}
-      <ResultBlock title="Bản nội dung" text={output} onRegenerate={regenerate} />
+      <ResultBlock
+        title={workflow === "ideas" ? "Danh sách hướng" : workflow === "improve" ? "Bản đã biên tập" : "Bản nội dung"}
+        text={output}
+        onChange={setOutput}
+        onRegenerate={regenerate}
+        onUseAsDraft={workflow === "ideas" ? useIdeasAsDraft : null}
+      />
       <details className="brief-debug">
         <summary>Tóm tắt dữ liệu đầu vào</summary>
         <pre>{briefSummary || "Chưa có dữ liệu để tóm tắt."}</pre>
@@ -1009,10 +1175,13 @@ function OutputSection({ output, briefSummary, history, loadHistory, regenerate 
         <summary>Các bản đã tạo trên thiết bị ({history.length})</summary>
         <div className="history-list">
           {history.map((item) => (
-            <button key={item.id} type="button" onClick={() => loadHistory(item)}>
-              <strong>{item.title}</strong>
-              <small>{new Date(item.createdAt).toLocaleString("vi-VN")}</small>
-            </button>
+            <div className="history-item" key={item.id}>
+              <button type="button" className="history-load" onClick={() => loadHistory(item)}>
+                <strong>{item.title}</strong>
+                <small>{new Date(item.createdAt).toLocaleString("vi-VN")}</small>
+              </button>
+              <button type="button" className="history-delete" aria-label={`Xóa ${item.title}`} onClick={() => removeHistory(item.id)}>Xóa</button>
+            </div>
           ))}
         </div>
       </details>

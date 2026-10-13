@@ -1,6 +1,7 @@
 export const MODEL_PRESETS = [
   {
     id: "openai-balance",
+    providerId: "openai",
     provider: "OpenAI",
     label: "GPT linh hoạt",
     model: "gpt-5.4-mini",
@@ -10,6 +11,7 @@ export const MODEL_PRESETS = [
   },
   {
     id: "openai-quality",
+    providerId: "openai",
     provider: "OpenAI",
     label: "GPT chuyên sâu",
     model: "gpt-5.5",
@@ -19,6 +21,7 @@ export const MODEL_PRESETS = [
   },
   {
     id: "openai-cheap",
+    providerId: "openai",
     provider: "OpenAI",
     label: "GPT nhanh gọn",
     model: "gpt-5.4-nano",
@@ -28,6 +31,7 @@ export const MODEL_PRESETS = [
   },
   {
     id: "gemini-flash",
+    providerId: "gemini",
     provider: "Google Gemini",
     label: "Gemini Flash",
     model: "gemini-3.5-flash",
@@ -37,6 +41,7 @@ export const MODEL_PRESETS = [
   },
   {
     id: "gemini-lite",
+    providerId: "gemini",
     provider: "Google Gemini",
     label: "Gemini Flash-Lite",
     model: "gemini-3.1-flash-lite",
@@ -46,15 +51,17 @@ export const MODEL_PRESETS = [
   },
   {
     id: "gemini-pro",
+    providerId: "gemini",
     provider: "Google Gemini",
     label: "Gemini Pro",
-    model: "gemini-3.1-pro",
+    model: "gemini-3.1-pro-preview",
     baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
     costLabel: "Tùy hạn mức của tài khoản",
     note: "Dành cho yêu cầu cần phân tích dữ liệu đầu vào kỹ hơn.",
   },
   {
     id: "openrouter",
+    providerId: "openrouter",
     provider: "OpenRouter",
     label: "OpenRouter",
     model: "openai/gpt-5.4-mini",
@@ -62,20 +69,12 @@ export const MODEL_PRESETS = [
     costLabel: "Chi phí phụ thuộc mô hình được chọn",
     note: "Kết nối nhiều mô hình khác nhau qua cùng một API.",
   },
-  {
-    id: "ollama",
-    provider: "Ollama trên máy",
-    label: "Mô hình cục bộ",
-    model: "llama3.1",
-    baseUrl: "http://localhost:11434/v1",
-    costLabel: "Không tính phí API, sử dụng tài nguyên máy",
-    note: "Cần cài Ollama và tải mô hình trước khi sử dụng.",
-  },
 ];
 
 export function applyModelPreset(currentSettings, preset) {
   return {
     ...currentSettings,
+    providerId: preset.providerId,
     model: preset.model,
     baseUrl: preset.baseUrl,
   };

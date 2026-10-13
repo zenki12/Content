@@ -18,6 +18,7 @@ test("applyModelPreset fills model and baseUrl while preserving apiKey", () => {
   );
 
   assert.equal(settings.apiKey, "keep-me");
+  assert.equal(settings.providerId, "gemini");
   assert.equal(settings.model, "gemini-3.5-flash");
   assert.equal(
     settings.baseUrl,

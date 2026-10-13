@@ -3,6 +3,10 @@ import { generateText } from "../../lib/ai-client.js";
 
 export async function POST(request: Request) {
   try {
+    const contentLength = Number(request.headers.get("content-length") || 0);
+    if (contentLength > 150_000) {
+      return NextResponse.json({ error: "Yêu cầu vượt quá giới hạn dữ liệu cho phép." }, { status: 413 });
+    }
     const body = await request.json();
     const text = await generateText({
       settings: body?.settings,

@@ -10,6 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "test": "node --test app/lib/*.test.js",
+    "test:e2e": "playwright test tests/interactions.spec.js",
     "db:generate": "drizzle-kit generate",
     "dev:vinext": "vinext dev",
     "build:vinext": "vinext build",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.37.1",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
