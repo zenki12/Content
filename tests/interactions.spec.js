@@ -47,3 +47,16 @@ test("mobile layout has no horizontal page overflow", async ({ page }) => {
   const dimensions = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, viewport: window.innerWidth }));
   expect(dimensions.width).toBeLessThanOrEqual(dimensions.viewport);
 });
+
+test("desktop navigation rail stays fixed on long pages", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 800 });
+  const rail = page.locator(".workspace-rail");
+  const before = await rail.boundingBox();
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await page.waitForTimeout(150);
+  const after = await rail.boundingBox();
+
+  expect(before?.y).toBe(0);
+  expect(after?.y).toBe(0);
+  expect(after?.height).toBe(800);
+});
