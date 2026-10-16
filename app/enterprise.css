@@ -2,7 +2,7 @@
 :root {
   --e-ink:#14212b; --e-text:#41586a; --e-muted:#7a8c99;
   --e-line:#d4dde4; --e-line-soft:#e7edf1;
-  --e-canvas:#e8ecef; --e-panel:#fff; --e-soft:#f5f8fa;
+  --e-canvas:#AEE4FF; --e-panel:#fff; --e-soft:#f3faff;
   --e-teal:#176985; --e-teal-dark:#0d536d; --e-teal-soft:#AEE4FF;
   --e-action:#176985; --e-action-hover:#0d536d;
   --e-amber:#b0710f; --e-amber-soft:#fbf0dc;
@@ -28,23 +28,23 @@ button,input,textarea,select{font:inherit;color:inherit;letter-spacing:0}code,pr
 .sua-bai-workspace{width:100%;max-width:none;min-height:100vh;margin:0;padding:0;display:grid;grid-template-columns:264px minmax(0,1fr);background:var(--e-canvas);border:0;border-radius:0;box-shadow:none}
 
 /* Left navigation */
-.workspace-rail{position:fixed;z-index:30;inset:0 auto 0 0;width:264px;height:100vh;height:100dvh;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;background:#14212b;color:#c7d4dd;padding:18px 0 24px}
-.workspace-rail .brand-head{max-width:none;margin:0 0 14px;padding:0 20px 18px;border-bottom:1px solid rgba(255,255,255,.09);text-align:left}
-.brand-lockup{display:flex;align-items:center;gap:10px}.workspace-rail .logo-mark{width:30px;height:30px;margin:0;display:grid;place-items:center;flex:none;border:1.5px solid #AEE4FF;border-radius:2px;color:#AEE4FF;font-size:12px;font-weight:700}
-.workspace-rail .brand-head h1{margin:0;background:none;color:#fff;font-size:15px;line-height:1.2;font-weight:650;-webkit-text-fill-color:currentColor}
-.workspace-rail .brand-head p{margin:4px 0 0;color:#7e93a1;font-size:11.5px;font-weight:400}
-.rail-group-label{padding:14px 20px 6px;color:#6c8290;font-size:10.5px;font-weight:650;text-transform:uppercase}
+.workspace-rail{position:fixed;z-index:30;inset:0 auto 0 0;width:264px;height:100vh;height:100dvh;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;background:#AEE4FF;color:#244c60;padding:18px 0 24px;border-right:1px solid rgba(23,105,133,.2)}
+.workspace-rail .brand-head{max-width:none;margin:0 0 14px;padding:0 20px 18px;border-bottom:1px solid rgba(23,105,133,.16);text-align:left}
+.brand-lockup{display:flex;align-items:center;gap:10px}.workspace-rail .logo-mark{width:30px;height:30px;margin:0;display:grid;place-items:center;flex:none;border:1.5px solid #176985;border-radius:2px;color:#176985;font-size:12px;font-weight:700}
+.workspace-rail .brand-head h1{margin:0;background:none;color:#102f3e;font-size:15px;line-height:1.2;font-weight:650;-webkit-text-fill-color:currentColor}
+.workspace-rail .brand-head p{margin:4px 0 0;color:#52778a;font-size:11.5px;font-weight:400}
+.rail-group-label{padding:14px 20px 6px;color:#52778a;font-size:10.5px;font-weight:650;text-transform:uppercase}
 .workspace-rail .mode-tabs,.workspace-rail .workflow-tabs{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin:0;padding:0;background:transparent;border:0;border-radius:0}
-.workspace-rail .mode-tabs button,.workspace-rail .workflow-tabs button{width:100%;min-height:58px;display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;gap:10px;padding:9px 18px 9px 16px;text-align:left;background:transparent;border:0;border-left:3px solid transparent;border-radius:0;color:#bacad5;cursor:pointer;box-shadow:none;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
-.workspace-rail .mode-tabs button:hover,.workspace-rail .workflow-tabs button:hover{background:rgba(255,255,255,.05);color:#fff}
-.workspace-rail .mode-tabs button.active,.workspace-rail .workflow-tabs button.active{background:rgba(174,228,255,.13);border-left-color:#AEE4FF;color:#fff;box-shadow:none}
-.mode-glyph,.workflow-code{width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.11);border-radius:2px;background:rgba(255,255,255,.035);font-size:14px}.workflow-code{color:#7f96a4;font-size:9.5px;font-weight:700;letter-spacing:.04em}.nav-copy{min-width:0}.workspace-rail .mode-tabs strong,.workspace-rail .workflow-tabs strong{display:block;color:inherit;font-size:12.8px;font-weight:600}.workspace-rail .mode-tabs small,.workspace-rail .workflow-tabs small{display:block;margin-top:2px;color:#718895;font-size:10.5px;line-height:1.35}.workspace-rail button.active small{color:#c9eaff}.workspace-rail button.active .mode-glyph,.workspace-rail button.active .workflow-code{border-color:rgba(174,228,255,.55);background:rgba(174,228,255,.12);color:#AEE4FF}
-.workspace-rail .ai-settings{margin:14px 16px 0;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.09);border-radius:var(--e-radius);color:#c7d4dd}
-.workspace-rail .ai-settings summary{min-height:42px;padding:11px 12px;color:#c7d4dd;font-size:12.5px;cursor:pointer}.workspace-rail .ai-settings[open] summary{border-bottom:1px solid rgba(255,255,255,.09)}
+.workspace-rail .mode-tabs button,.workspace-rail .workflow-tabs button{width:100%;min-height:58px;display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;gap:10px;padding:9px 18px 9px 16px;text-align:left;background:transparent;border:0;border-left:3px solid transparent;border-radius:0;color:#31596c;cursor:pointer;box-shadow:none;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+.workspace-rail .mode-tabs button:hover,.workspace-rail .workflow-tabs button:hover{background:rgba(255,255,255,.42);color:#102f3e}
+.workspace-rail .mode-tabs button.active,.workspace-rail .workflow-tabs button.active{background:rgba(255,255,255,.62);border-left-color:#176985;color:#102f3e;box-shadow:none}
+.mode-glyph,.workflow-code{width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(23,105,133,.24);border-radius:2px;background:rgba(255,255,255,.28);font-size:14px}.workflow-code{color:#416b7e;font-size:9.5px;font-weight:700;letter-spacing:.04em}.nav-copy{min-width:0}.workspace-rail .mode-tabs strong,.workspace-rail .workflow-tabs strong{display:block;color:inherit;font-size:12.8px;font-weight:600}.workspace-rail .mode-tabs small,.workspace-rail .workflow-tabs small{display:block;margin-top:2px;color:#557b8d;font-size:10.5px;line-height:1.35}.workspace-rail button.active small{color:#31596c}.workspace-rail button.active .mode-glyph,.workspace-rail button.active .workflow-code{border-color:rgba(23,105,133,.48);background:rgba(255,255,255,.58);color:#176985}
+.workspace-rail .ai-settings{margin:14px 16px 0;background:rgba(255,255,255,.36);border:1px solid rgba(23,105,133,.22);border-radius:var(--e-radius);color:#244c60}
+.workspace-rail .ai-settings summary{min-height:42px;padding:11px 12px;color:#173f52;font-size:12.5px;cursor:pointer}.workspace-rail .ai-settings[open] summary{border-bottom:1px solid rgba(23,105,133,.18)}
 .workspace-rail .model-grid,.workspace-rail .settings-fields{display:grid;grid-template-columns:1fr;gap:7px;padding:10px}.workspace-rail .settings-fields{padding-top:0}
-.workspace-rail .model-option{min-width:0;padding:8px;display:grid;text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:2px;color:#c7d4dd}.workspace-rail .model-option.active{background:rgba(174,228,255,.13);border-color:#AEE4FF}.workspace-rail .model-option span,.workspace-rail .model-option code,.workspace-rail .model-option em{color:#7e93a1;font-size:10px}.workspace-rail .model-option strong{font-size:11.5px}
-.workspace-rail .field-label{color:#aebfca;font-size:11px}.workspace-rail input{min-height:36px;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#fff}
-.rail-foot{margin-top:auto;padding:18px 20px 0;border-top:1px solid rgba(255,255,255,.09);color:#6c8290;font-size:11px}
+.workspace-rail .model-option{min-width:0;padding:8px;display:grid;text-align:left;background:rgba(255,255,255,.46);border:1px solid rgba(23,105,133,.16);border-radius:2px;color:#244c60}.workspace-rail .model-option.active{background:#fff;border-color:#176985}.workspace-rail .model-option span,.workspace-rail .model-option code,.workspace-rail .model-option em{color:#52778a;font-size:10px}.workspace-rail .model-option strong{font-size:11.5px}
+.workspace-rail .field-label{color:#31596c;font-size:11px}.workspace-rail input{min-height:36px;background:rgba(255,255,255,.74);border-color:rgba(23,105,133,.22);color:#102f3e}
+.rail-foot{margin-top:auto;padding:18px 20px 0;border-top:1px solid rgba(23,105,133,.16);color:#52778a;font-size:11px}
 
 /* Main workspace */
 .workspace-main{grid-column:2;min-width:0;display:flex;flex-direction:column}.workspace-main .top-bar{position:sticky;top:0;z-index:20;min-height:58px;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;background:var(--e-panel);border-bottom:1px solid var(--e-line)}
@@ -85,10 +85,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.001ms!important;animation-duration:.001ms!important}}
 
 /* Interaction states and editable output */
-.workspace-rail .model-option small{display:block;margin-top:3px;color:#7e93a1;font-size:10px;line-height:1.35}
+.workspace-rail .model-option small{display:block;margin-top:3px;color:#52778a;font-size:10px;line-height:1.35}
 .connection-check{display:grid;gap:6px}
-.connection-check button{min-height:36px;border:1px solid #AEE4FF;border-radius:2px;background:rgba(174,228,255,.12);color:#d9f3ff;cursor:pointer}
-.connection-check span{color:#9db1bc;font-size:10.5px;line-height:1.4}
+.connection-check button{min-height:36px;border:1px solid #176985;border-radius:2px;background:#176985;color:#fff;cursor:pointer}
+.connection-check span{color:#416b7e;font-size:10.5px;line-height:1.4}
 .field-invalid input,.field-invalid textarea{border-color:var(--e-rose)!important}
 .field-invalid .pill-row{padding:7px;border:1px solid var(--e-rose);border-radius:var(--e-radius)}
 .field-error{color:var(--e-rose);font-size:11.5px;font-weight:600}
